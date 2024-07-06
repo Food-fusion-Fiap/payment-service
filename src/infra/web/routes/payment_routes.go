@@ -8,8 +8,6 @@ import (
 func SetupPaymentRoutes(router *gin.Engine) {
 	orderRoutes := router.Group("/payments")
 	{
-		orderRoutes.GET("/status", paymentController.CheckOrderPaymentStatus)
-		orderRoutes.GET("/qr-code", paymentController.GetOrderQrCode)
-		orderRoutes.POST("", paymentController.MercadoPagoPayment)
+		orderRoutes.GET("/request-payment", paymentController.RequestPayment)
 	}
 }
