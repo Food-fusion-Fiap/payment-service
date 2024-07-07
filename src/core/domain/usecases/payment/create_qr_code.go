@@ -30,5 +30,5 @@ func (r *CreateQrCodeUseCase) Execute(order entities.Order) (string, error) {
 		return "", err
 	}
 
-	return r.PaymentInterface.CreatePayment(order)
+	return generatedQrCode, err
 }

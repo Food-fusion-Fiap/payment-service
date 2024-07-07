@@ -8,6 +8,8 @@ import (
 func SetupPaymentRoutes(router *gin.Engine) {
 	orderRoutes := router.Group("/payments")
 	{
-		orderRoutes.GET("/request-payment", paymentController.RequestPayment)
+		orderRoutes.GET("/request-qr-code", paymentController.RequestQrCode)
+		orderRoutes.PATCH("/alternative-pay/:id", paymentController.Pay)
+		orderRoutes.PATCH("/alternative-pay-with-qr-code/:qr", paymentController.PayQrCode)
 	}
 }
