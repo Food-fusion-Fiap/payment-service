@@ -32,9 +32,12 @@ func (r PaymentRepository) Create(e *entities.Payment) (*entities.Payment, error
 	return &result, nil
 }
 
-func (r PaymentRepository) FindById(paymentId uint) (*entities.Payment, error) {
+func (r PaymentRepository) FindByOrderId(orderId uint) (*entities.Payment, error) {
 	var payment models.Payment
-	gorm.DB.First(&payment, paymentId)
+	gorm.DB.Where("order_id = ?", orderId).Find(&payment)
+	if payment.ID != 0 {
+		return nil, errors.New("pagamento associado ao id do pedido não encontado")
+	}
 	result := payment.ToDomain()
 	return &result, nil
 }
@@ -44,7 +47,7 @@ func (r PaymentRepository) FindByQrCode(qrCode string) (*entities.Payment, error
 
 	gorm.DB.Where("payment_status = ? and qr_code = ?", enums.Paid, qrCode).Find(&payment)
 	if payment.ID != 0 {
-		return nil, errors.New("Já está pago")
+		return nil, errors.New("já está pago")
 	}
 
 	gorm.DB.Where("payment_status = ? and qr_code = ?", enums.AwaitingPayment, qrCode).Find(&payment)

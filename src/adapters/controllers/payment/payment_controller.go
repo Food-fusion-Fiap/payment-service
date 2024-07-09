@@ -74,3 +74,23 @@ func PayQrCode(c *gin.Context) {
 
 	c.JSON(http.StatusOK, response)
 }
+
+func CheckOrderPaymentStatus(c *gin.Context) {
+	value, _ := c.GetQuery("orderId")
+	orderId, _ := strconv.Atoi(value)
+
+	usecase := usecases.CheckPaymentStatusUsecase{
+		PaymentRepository: &repositories.PaymentRepository{},
+	}
+
+	response, err := usecase.Execute(uint(orderId))
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
+}
