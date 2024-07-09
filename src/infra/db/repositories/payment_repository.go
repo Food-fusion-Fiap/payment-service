@@ -32,22 +32,31 @@ func (r PaymentRepository) Create(e *entities.Payment) (*entities.Payment, error
 	return &result, nil
 }
 
-func (r PaymentRepository) FindById(paymentId uint) (*entities.Payment, error) {
+func (r PaymentRepository) FindByOrderId(orderId uint) (*entities.Payment, error) {
 	var payment models.Payment
-	gorm.DB.First(&payment, paymentId)
+	//se o orderId tiver mais que um QRCode associado, pega o último
+	gorm.DB.Where("order_id = ?", orderId).Order("created_at DESC").Limit(1).Find(&payment)
+	if payment.ID == 0 {
+		return nil, errors.New("pagamento associado ao id do pedido não encontado")
+	}
+
 	result := payment.ToDomain()
 	return &result, nil
 }
 
 func (r PaymentRepository) FindByQrCode(qrCode string) (*entities.Payment, error) {
 	var payment models.Payment
-
-	gorm.DB.Where("payment_status = ? and qr_code = ?", enums.Paid, qrCode).Find(&payment)
+	gorm.DB.Where("qr_code = ?", qrCode).Find(&payment)
 	if payment.ID != 0 {
-		return nil, errors.New("Já está pago")
+		return nil, errors.New("pagamento associado ao qrCode não encontado")
 	}
 
-	gorm.DB.Where("payment_status = ? and qr_code = ?", enums.AwaitingPayment, qrCode).Find(&payment)
 	result := payment.ToDomain()
 	return &result, nil
+}
+
+func (r PaymentRepository) UpdateToPaid(paymentID uint) {
+	var payment models.Payment
+	gorm.DB.First(&payment, paymentID)
+	gorm.DB.Model(&payment).Updates(models.Payment{PaymentStatus: enums.Paid})
 }
