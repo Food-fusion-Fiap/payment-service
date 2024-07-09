@@ -44,7 +44,7 @@ func Pay(c *gin.Context) {
 		PaymentRepository: &repositories.PaymentRepository{},
 	}
 
-	response, err := usecase.Execute(uint(id))
+	response, err := usecase.ExecuteWithOrderId(uint(id))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -59,11 +59,11 @@ func Pay(c *gin.Context) {
 func PayQrCode(c *gin.Context) {
 	qrCode := c.Params.ByName("qr")
 
-	usecase := usecases.MakePaymentWithQrCodeUseCase{
+	usecase := usecases.MakePaymentUseCase{
 		PaymentRepository: &repositories.PaymentRepository{},
 	}
 
-	response, err := usecase.Execute(qrCode)
+	response, err := usecase.ExecuteWithQrCode(qrCode)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
