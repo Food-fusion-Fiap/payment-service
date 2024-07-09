@@ -10,9 +10,10 @@ func SetupPaymentRoutes(router *gin.Engine) {
 	{
 		orderRoutes.GET("/qr-code", paymentController.RequestQrCode)
 		orderRoutes.GET("/status", paymentController.CheckOrderPaymentStatus)
-		//orderRoutes.POST("", paymentController.MercadoPagoPayment)
+		orderRoutes.POST("", paymentController.MercadoPagoPayment)
 
-		orderRoutes.PATCH("/alternative-pay/:id", paymentController.Pay)
-		orderRoutes.PATCH("/alternative-pay-with-qr-code/:qr", paymentController.PayQrCode)
+		//Routes that mock MercadoPago webhook payment:
+		orderRoutes.POST("/alternative-pay/:id", paymentController.Pay)
+		orderRoutes.POST("/alternative-pay-with-qr-code/:qr", paymentController.PayQrCode)
 	}
 }

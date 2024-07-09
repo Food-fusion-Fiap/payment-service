@@ -35,7 +35,7 @@ func (r PaymentRepository) Create(e *entities.Payment) (*entities.Payment, error
 func (r PaymentRepository) FindByOrderId(orderId uint) (*entities.Payment, error) {
 	var payment models.Payment
 	gorm.DB.Where("order_id = ?", orderId).Find(&payment)
-	if payment.ID != 0 {
+	if payment.ID == 0 {
 		return nil, errors.New("pagamento associado ao id do pedido não encontado")
 	}
 

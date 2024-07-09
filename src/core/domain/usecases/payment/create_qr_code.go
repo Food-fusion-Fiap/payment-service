@@ -9,12 +9,18 @@ import (
 type CreateQrCodeUseCase struct {
 	PaymentInterface  gateways.PaymentInterface
 	PaymentRepository gateways.PaymentRepository
+	OrderInterface    gateways.OrderInterface
 }
 
-func (r *CreateQrCodeUseCase) Execute(order entities.Order) (string, error) {
+func (r *CreateQrCodeUseCase) Execute(orderId uint) (string, error) {
 	var err error
 
-	generatedQrCode, err := r.PaymentInterface.CreatePayment(order)
+	order, err := r.OrderInterface.GetOrder(orderId)
+	if err != nil {
+		return "", err
+	}
+
+	generatedQrCode, err := r.PaymentInterface.CreatePayment(*order)
 	if err != nil {
 		return "", err
 	}
