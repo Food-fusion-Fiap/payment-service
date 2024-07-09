@@ -34,7 +34,8 @@ func (r PaymentRepository) Create(e *entities.Payment) (*entities.Payment, error
 
 func (r PaymentRepository) FindByOrderId(orderId uint) (*entities.Payment, error) {
 	var payment models.Payment
-	gorm.DB.Where("order_id = ?", orderId).Find(&payment)
+	//se o orderId tiver mais que um QRCode associado, pega o último
+	gorm.DB.Where("order_id = ?", orderId).Order("created_at DESC").Limit(1).Find(&payment)
 	if payment.ID == 0 {
 		return nil, errors.New("pagamento associado ao id do pedido não encontado")
 	}

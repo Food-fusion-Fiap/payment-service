@@ -114,14 +114,13 @@ func MercadoPagoPayment(c *gin.Context) {
 
 	if inputDto.State == mercado_pago.Finished {
 		response, err := usecase.ExecuteWithOrderId(uint(orderId))
-
+		//TODO: avisar pro microserviço de order que foi pago
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"error": err.Error(),
 			})
 			return
 		}
-		//TODO: avisar pro microserviço de order que foi pago
 		c.JSON(http.StatusOK, response)
 	} else if inputDto.State == mercado_pago.Error || inputDto.State == mercado_pago.Canceled {
 		//TODO: avisar pro microserviço de order que foi cancelado
