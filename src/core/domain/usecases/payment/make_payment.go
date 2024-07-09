@@ -36,13 +36,9 @@ func (r *MakePaymentUseCase) ExecuteWithOrderId(orderId uint) (string, error) {
 func (r *MakePaymentUseCase) UpdateStatus(payment *entities.Payment) (string, error) {
 	if payment.PaymentStatus == enums.AwaitingPayment {
 		payment.PaymentStatus = enums.Paid
-		_, err := r.PaymentRepository.Create(payment)
-		if err != nil {
-			return "", errors.New("não foi possível efetuar o pagamento")
-		}
+		r.PaymentRepository.UpdateToPaid(payment.ID)
+		return "Pago", nil
 	} else {
 		return "", errors.New("não foi possível efetuar o pagamento: o pagamento já foi pago")
 	}
-
-	return "Pago", nil
 }

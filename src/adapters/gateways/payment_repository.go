@@ -6,4 +6,5 @@ type PaymentRepository interface {
 	Create(order *entities.Payment) (*entities.Payment, error)
 	FindByOrderId(orderId uint) (*entities.Payment, error)
 	FindByQrCode(qrCode string) (*entities.Payment, error)
+	UpdateToPaid(paymentID uint)
 }
