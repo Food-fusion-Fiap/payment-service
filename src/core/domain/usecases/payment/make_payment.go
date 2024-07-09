@@ -33,7 +33,7 @@ func (r *MakePaymentUseCase) ExecuteWithOrderId(orderId uint) (string, error) {
 	return r.UpdateStatus(payment)
 }
 
-func (r *MakePaymentUseCase) UpdateStatus(payment *entities.Payment) (string, error) {
+func (r *MakePaymentUseCase) UpdateStatus(payment entities.Payment) (string, error) {
 	if payment.PaymentStatus == enums.AwaitingPayment {
 		payment.PaymentStatus = enums.Paid
 		r.PaymentRepository.UpdateToPaid(payment.ID)

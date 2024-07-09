@@ -12,7 +12,7 @@ import (
 type PaymentRepository struct {
 }
 
-func (r PaymentRepository) Create(e *entities.Payment) (*entities.Payment, error) {
+func (r PaymentRepository) Create(e entities.Payment) (entities.Payment, error) {
 	payment := models.Payment{
 		OrderID:       e.OrderID,
 		QrCode:        e.QrCode,
@@ -21,38 +21,38 @@ func (r PaymentRepository) Create(e *entities.Payment) (*entities.Payment, error
 
 	if err := gorm.DB.Create(&payment).Error; err != nil {
 		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
-			return nil, errors.New("pagamento já existe no sistema")
+			return entities.Payment{}, errors.New("pagamento já existe no sistema")
 		} else {
-			return nil, errors.New("ocorreu um erro desconhecido ao criar o pagamento")
+			return entities.Payment{}, errors.New("ocorreu um erro desconhecido ao criar o pagamento")
 		}
 	}
 
 	result := payment.ToDomain()
 
-	return &result, nil
+	return result, nil
 }
 
-func (r PaymentRepository) FindByOrderId(orderId uint) (*entities.Payment, error) {
+func (r PaymentRepository) FindByOrderId(orderId uint) (entities.Payment, error) {
 	var payment models.Payment
 	//se o orderId tiver mais que um QRCode associado, pega o último
 	gorm.DB.Where("order_id = ?", orderId).Order("created_at DESC").Limit(1).Find(&payment)
 	if payment.ID == 0 {
-		return nil, errors.New("pagamento associado ao id do pedido não encontado")
+		return entities.Payment{}, errors.New("pagamento associado ao id do pedido não encontado")
 	}
 
 	result := payment.ToDomain()
-	return &result, nil
+	return result, nil
 }
 
-func (r PaymentRepository) FindByQrCode(qrCode string) (*entities.Payment, error) {
+func (r PaymentRepository) FindByQrCode(qrCode string) (entities.Payment, error) {
 	var payment models.Payment
 	gorm.DB.Where("qr_code = ?", qrCode).Find(&payment)
 	if payment.ID != 0 {
-		return nil, errors.New("pagamento associado ao qrCode não encontado")
+		return entities.Payment{}, errors.New("pagamento associado ao qrCode não encontado")
 	}
 
 	result := payment.ToDomain()
-	return &result, nil
+	return result, nil
 }
 
 func (r PaymentRepository) UpdateToPaid(paymentID uint) {
