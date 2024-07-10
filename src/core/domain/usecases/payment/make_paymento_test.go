@@ -7,7 +7,7 @@ import (
 	"testing"
 )
 
-func TestMakePaymentUseCase(t *testing.T) {
+func TestMakePaymentUseCase_FindByQrCode_Success(t *testing.T) {
 	mockQrCode := "mockQrCode"
 	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
 
@@ -16,7 +16,7 @@ func TestMakePaymentUseCase(t *testing.T) {
 		pr.On("FindByQrCode", mockQrCode).Return(mockPayment, nil)
 	}
 
-	t.Run("when sucess findbyQRCode", func(t *testing.T) {
+	t.Run("when success findbyQRCode", func(t *testing.T) {
 		paymentRepositoryMock := &mocks.PaymentRepository{}
 		prepare(t, paymentRepositoryMock)
 
@@ -29,5 +29,29 @@ func TestMakePaymentUseCase(t *testing.T) {
 			return
 		}
 
+	})
+}
+
+func TestMakePaymentUseCase(t *testing.T) {
+	mockOrderId := uint(407)
+	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
+
+	prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
+		t.Helper()
+		pr.On("FindByOrderId", mockOrderId).Return(mockPayment, nil)
+	}
+
+	t.Run("when sucess findbyQRCode", func(t *testing.T) {
+		paymentRepositoryMock := &mocks.PaymentRepository{}
+		prepare(t, paymentRepositoryMock)
+
+		usecase := MakePaymentUseCase{
+			PaymentRepository: paymentRepositoryMock,
+		}
+
+		_, err := usecase.ExecuteWithOrderId(mockOrderId)
+		if err != nil {
+			return
+		}
 	})
 }
