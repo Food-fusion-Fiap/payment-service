@@ -49,7 +49,7 @@ jobs:
             -Dsonar.projectKey=Food-fusion-Fiap_payment-service
             -Dsonar.organization=food-fusion-fiap
             -Dsonar.tests=.
-            -Dsonar.test.inclusions=**/*_test.go
+            -Dsonar.test.inclusions=src/*_test.go
             -Dsonar.sources=.
             -Dsonar.exclusions=**/*_test.go
 
