@@ -50,9 +50,8 @@ jobs:
             -Dsonar.organization=food-fusion-fiap
             -Dsonar.tests=.
             -Dsonar.test.inclusions=**/*_test.go
-            -Dsonar.sources=.
+            -Dsonar.sources=src/
             -Dsonar.exclusions=**/*_test.go
-
             -Dsonar.tests=.
             -Dsonar.test.inclusions=**/*_test.go
             -Dsonar.go.coverage.reportPaths=cov.out
