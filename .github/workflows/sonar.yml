@@ -39,6 +39,23 @@ permissions:
   pull-requests: read # allows SonarCloud to decorate PRs with analysis results
 
 jobs:
+  build:
+    name: Compile and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone Repository
+        uses: actions/checkout@master
+      - name: Setup go
+        uses: actions/setup-go@v5
+        with:
+          go-version: '1.21.4'
+      - run: make test
+      - name: Archive code coverage results
+        uses: actions/upload-artifact@v4
+        with:
+          name: code-coverage-report
+          path: bin
+
   Analysis:
     runs-on: ubuntu-latest
 
@@ -61,7 +78,7 @@ jobs:
             -Dsonar.test.inclusions=**/*_test.go
             -Dsonar.go.gometalinter.reportPaths=gometalinter-report.out
             -Dsonar.go.tests.reportPaths=report.json
-            -Dsonar.go.coverage.reportPaths=coverage.out
+            -Dsonar.go.coverage.reportPaths=bin/coverage.out
             #sonar.go.govet.reportPaths=govet-report.out
             #sonar.go.golint.reportPaths=golint-report.out
             # Comma-separated paths to directories containing main source files.
