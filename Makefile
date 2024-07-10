@@ -11,7 +11,7 @@ build:
 
 test: build
 	go test -short -coverprofile=bin/cov.out `go list ./... | grep -v vendor/`
-	go tool cover -func=bin/coverage.out
+	go tool cover -func=bin/cov.out
 
 clean:
 	rm -rf ./bin
