@@ -20,7 +20,7 @@ func (r *CreateQrCodeUseCase) Execute(orderId uint) (string, error) {
 		return "", err
 	}
 
-	generatedQrCode, err := r.PaymentInterface.CreatePayment(*order)
+	generatedQrCode, err := r.PaymentInterface.CreatePayment(order)
 	if err != nil {
 		return "", err
 	}

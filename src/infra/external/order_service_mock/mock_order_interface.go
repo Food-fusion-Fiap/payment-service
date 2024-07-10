@@ -8,7 +8,7 @@ import (
 type OrderInterface struct {
 }
 
-func (r OrderInterface) GetOrder(orderId uint) (*entities.Order, error) {
+func (r OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 	var water = entities.Product{
 		ID:          1,
 		Name:        "Água",
@@ -39,11 +39,11 @@ func (r OrderInterface) GetOrder(orderId uint) (*entities.Order, error) {
 		Products: []entities.ProductInsideOrder{waterInsideOrder, sandwichInsideOrder},
 	}
 
-	return &order, nil
+	return order, nil
 }
 
-func (r OrderInterface) NotifyStatusChange(orderId uint) (*entities.Order, error) {
+func (r OrderInterface) NotifyStatusChange(orderId uint) (entities.Order, error) {
 	var order = entities.Order{}
 
-	return &order, nil
+	return order, nil
 }
