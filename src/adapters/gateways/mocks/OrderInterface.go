@@ -14,24 +14,22 @@ type OrderInterface struct {
 }
 
 // GetOrder provides a mock function with given fields: orderId
-func (_m *OrderInterface) GetOrder(orderId uint) (*entities.Order, error) {
+func (_m *OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for GetOrder")
 	}
 
-	var r0 *entities.Order
+	var r0 entities.Order
 	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (*entities.Order, error)); ok {
+	if rf, ok := ret.Get(0).(func(uint) (entities.Order, error)); ok {
 		return rf(orderId)
 	}
-	if rf, ok := ret.Get(0).(func(uint) *entities.Order); ok {
+	if rf, ok := ret.Get(0).(func(uint) entities.Order); ok {
 		r0 = rf(orderId)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*entities.Order)
-		}
+		r0 = ret.Get(0).(entities.Order)
 	}
 
 	if rf, ok := ret.Get(1).(func(uint) error); ok {
@@ -44,24 +42,22 @@ func (_m *OrderInterface) GetOrder(orderId uint) (*entities.Order, error) {
 }
 
 // NotifyStatusChange provides a mock function with given fields: orderId
-func (_m *OrderInterface) NotifyStatusChange(orderId uint) (*entities.Order, error) {
+func (_m *OrderInterface) NotifyStatusChange(orderId uint) (entities.Order, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for NotifyStatusChange")
 	}
 
-	var r0 *entities.Order
+	var r0 entities.Order
 	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (*entities.Order, error)); ok {
+	if rf, ok := ret.Get(0).(func(uint) (entities.Order, error)); ok {
 		return rf(orderId)
 	}
-	if rf, ok := ret.Get(0).(func(uint) *entities.Order); ok {
+	if rf, ok := ret.Get(0).(func(uint) entities.Order); ok {
 		r0 = rf(orderId)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*entities.Order)
-		}
+		r0 = ret.Get(0).(entities.Order)
 	}
 
 	if rf, ok := ret.Get(1).(func(uint) error); ok {
