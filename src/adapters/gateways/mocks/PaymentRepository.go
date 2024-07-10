@@ -14,22 +14,22 @@ type PaymentRepository struct {
 }
 
 // Create provides a mock function with given fields: order
-func (_m *PaymentRepository) Create(order entities.Payment) (entities.Payment, error) {
+func (_m *PaymentRepository) Create(order entities.Payment) (string, error) {
 	ret := _m.Called(order)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Create")
 	}
 
-	var r0 entities.Payment
+	var r0 string
 	var r1 error
-	if rf, ok := ret.Get(0).(func(entities.Payment) (entities.Payment, error)); ok {
+	if rf, ok := ret.Get(0).(func(entities.Payment) (string, error)); ok {
 		return rf(order)
 	}
-	if rf, ok := ret.Get(0).(func(entities.Payment) entities.Payment); ok {
+	if rf, ok := ret.Get(0).(func(entities.Payment) string); ok {
 		r0 = rf(order)
 	} else {
-		r0 = ret.Get(0).(entities.Payment)
+		r0 = ret.Get(0).(string)
 	}
 
 	if rf, ok := ret.Get(1).(func(entities.Payment) error); ok {
