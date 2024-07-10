@@ -31,7 +31,7 @@ func (r *CreateQrCodeUseCase) Execute(orderId uint) (string, error) {
 		PaymentStatus: enums.AwaitingPayment,
 	}
 
-	_, err = r.PaymentRepository.Create(&payment)
+	_, err = r.PaymentRepository.Create(payment)
 	if err != nil {
 		return "", err
 	}

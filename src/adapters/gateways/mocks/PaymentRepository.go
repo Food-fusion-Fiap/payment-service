@@ -14,27 +14,25 @@ type PaymentRepository struct {
 }
 
 // Create provides a mock function with given fields: order
-func (_m *PaymentRepository) Create(order *entities.Payment) (*entities.Payment, error) {
+func (_m *PaymentRepository) Create(order entities.Payment) (entities.Payment, error) {
 	ret := _m.Called(order)
 
 	if len(ret) == 0 {
 		panic("no return value specified for Create")
 	}
 
-	var r0 *entities.Payment
+	var r0 entities.Payment
 	var r1 error
-	if rf, ok := ret.Get(0).(func(*entities.Payment) (*entities.Payment, error)); ok {
+	if rf, ok := ret.Get(0).(func(entities.Payment) (entities.Payment, error)); ok {
 		return rf(order)
 	}
-	if rf, ok := ret.Get(0).(func(*entities.Payment) *entities.Payment); ok {
+	if rf, ok := ret.Get(0).(func(entities.Payment) entities.Payment); ok {
 		r0 = rf(order)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*entities.Payment)
-		}
+		r0 = ret.Get(0).(entities.Payment)
 	}
 
-	if rf, ok := ret.Get(1).(func(*entities.Payment) error); ok {
+	if rf, ok := ret.Get(1).(func(entities.Payment) error); ok {
 		r1 = rf(order)
 	} else {
 		r1 = ret.Error(1)
@@ -44,24 +42,22 @@ func (_m *PaymentRepository) Create(order *entities.Payment) (*entities.Payment,
 }
 
 // FindByOrderId provides a mock function with given fields: orderId
-func (_m *PaymentRepository) FindByOrderId(orderId uint) (*entities.Payment, error) {
+func (_m *PaymentRepository) FindByOrderId(orderId uint) (entities.Payment, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for FindByOrderId")
 	}
 
-	var r0 *entities.Payment
+	var r0 entities.Payment
 	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (*entities.Payment, error)); ok {
+	if rf, ok := ret.Get(0).(func(uint) (entities.Payment, error)); ok {
 		return rf(orderId)
 	}
-	if rf, ok := ret.Get(0).(func(uint) *entities.Payment); ok {
+	if rf, ok := ret.Get(0).(func(uint) entities.Payment); ok {
 		r0 = rf(orderId)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*entities.Payment)
-		}
+		r0 = ret.Get(0).(entities.Payment)
 	}
 
 	if rf, ok := ret.Get(1).(func(uint) error); ok {
@@ -74,24 +70,22 @@ func (_m *PaymentRepository) FindByOrderId(orderId uint) (*entities.Payment, err
 }
 
 // FindByQrCode provides a mock function with given fields: qrCode
-func (_m *PaymentRepository) FindByQrCode(qrCode string) (*entities.Payment, error) {
+func (_m *PaymentRepository) FindByQrCode(qrCode string) (entities.Payment, error) {
 	ret := _m.Called(qrCode)
 
 	if len(ret) == 0 {
 		panic("no return value specified for FindByQrCode")
 	}
 
-	var r0 *entities.Payment
+	var r0 entities.Payment
 	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (*entities.Payment, error)); ok {
+	if rf, ok := ret.Get(0).(func(string) (entities.Payment, error)); ok {
 		return rf(qrCode)
 	}
-	if rf, ok := ret.Get(0).(func(string) *entities.Payment); ok {
+	if rf, ok := ret.Get(0).(func(string) entities.Payment); ok {
 		r0 = rf(qrCode)
 	} else {
-		if ret.Get(0) != nil {
-			r0 = ret.Get(0).(*entities.Payment)
-		}
+		r0 = ret.Get(0).(entities.Payment)
 	}
 
 	if rf, ok := ret.Get(1).(func(string) error); ok {
