@@ -4,10 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
-      - master
+      - main
   push:
     branches:
-      - master
+      - main
 
 permissions:
   contents: write
@@ -160,4 +160,3 @@ jobs:
           git config --local user.name "GitHub Action"
           git tag ${{ steps.tagger.outputs.next_tag }}
           git push origin ${{ steps.tagger.outputs.next_tag }}
-          
