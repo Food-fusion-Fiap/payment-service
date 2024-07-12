@@ -3,11 +3,13 @@ module github.com/CAVAh/api-tech-challenge
 go 1.21.4
 
 require (
+	github.com/DATA-DOG/go-sqlmock v1.5.2
 	github.com/gin-gonic/gin v1.9.1
 	github.com/stretchr/testify v1.9.0
-	gopkg.in/validator.v2 v2.0.1
+	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
+	gorm.io/driver/mysql v1.5.7
 	gorm.io/driver/postgres v1.5.4
-	gorm.io/gorm v1.25.5
+	gorm.io/gorm v1.25.7
 )
 
 require (
@@ -20,6 +22,7 @@ require (
 	github.com/go-playground/locales v0.14.1 // indirect
 	github.com/go-playground/universal-translator v0.18.1 // indirect
 	github.com/go-playground/validator/v10 v10.16.0 // indirect
+	github.com/go-sql-driver/mysql v1.7.0 // indirect
 	github.com/goccy/go-json v0.10.2 // indirect
 	github.com/jackc/pgpassfile v1.0.0 // indirect
 	github.com/jackc/pgservicefile v0.0.0-20231201235250-de7065d80cb9 // indirect
@@ -29,6 +32,7 @@ require (
 	github.com/jinzhu/now v1.1.5 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
+	github.com/kr/text v0.1.0 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
 	github.com/modern-go/concurrent v0.0.0-20180306012644-bacd9c7ef1dd // indirect
@@ -39,7 +43,6 @@ require (
 	github.com/stretchr/objx v0.5.2 // indirect
 	github.com/twitchyliquid64/golang-asm v0.15.1 // indirect
 	github.com/ugorji/go/codec v1.2.12 // indirect
-	github.com/vektra/mockery v1.1.2 // indirect
 	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/crypto v0.16.0 // indirect
 	golang.org/x/net v0.19.0 // indirect
