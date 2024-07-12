@@ -4,10 +4,10 @@ on:
   pull_request:
     types: [opened, synchronize, reopened]
     branches:
-      - master
+      - main
   push:
     branches:
-      - master
+      - main
 
 permissions:
   contents: write
@@ -77,7 +77,7 @@ jobs:
         run: go test ./...
 
   build-and-deploy:
-    name: Continuous Delivery Pipeline
+    name: CD Pipeline - Continuous Delivery Pipeline
     runs-on: ubuntu-latest
     if: github.event_name == 'push'
     steps:
@@ -92,7 +92,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          #aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
+          aws-session-token: ${{ secrets.AWS_SESSION_TOKEN }}
           aws-region: ${{ secrets.AWS_REGION }}
 
       - name: Login to Amazon ECR
@@ -160,4 +160,3 @@ jobs:
           git config --local user.name "GitHub Action"
           git tag ${{ steps.tagger.outputs.next_tag }}
           git push origin ${{ steps.tagger.outputs.next_tag }}
-          
