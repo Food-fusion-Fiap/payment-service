@@ -160,3 +160,4 @@ jobs:
           git config --local user.name "GitHub Action"
           git tag ${{ steps.tagger.outputs.next_tag }}
           git push origin ${{ steps.tagger.outputs.next_tag }}
+          
