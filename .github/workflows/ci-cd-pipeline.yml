@@ -133,13 +133,6 @@ jobs:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}  
           IMAGE_TAG: ${{ steps.commit.outputs.short }}
         run: |
-          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" manifests/hello-app-deployment.yaml && \
-          kubectl apply -f manifests/hello-app-deployment.yaml
-          kubectl apply -f manifests/hello-app-service.yaml
-
-      - name: Push new tag to GitHub
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git tag ${{ steps.commit.outputs.short }}
-          git push origin ${{ steps.commit.outputs.short }}
+          sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" infra/golang-app-deployment.yaml && \
+          kubectl apply -f infra/golang-app-deployment.yaml
+          kubectl apply -f infra/services.yaml
