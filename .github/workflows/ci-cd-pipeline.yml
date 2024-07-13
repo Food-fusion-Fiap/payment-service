@@ -114,7 +114,6 @@ jobs:
           docker build -t $IMAGE_URI .
           docker push $IMAGE_URI
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
-
         
       - name: Update Kubernetes configuration
         run: |
@@ -122,14 +121,11 @@ jobs:
           cat ./infra/golang-app-deployment.yaml
           sed -i 's|placeholder_iam_user|'"$IAM_USER"'|' ./infra/eks-rbac.yaml
 
-
-
       - name: Install kubectl
         run: |
           curl -LO "https://dl.k8s.io/release/$(curl -sSL https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
           chmod +x kubectl
           sudo mv kubectl /usr/local/bin/
-
 
       - name: Update kube config
         env:
@@ -143,11 +139,12 @@ jobs:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
+          kubectl config get-contexts
           kubectl apply -f ./infra --validate=false
           kubectl rollout status deployment/$K8S_DEPLOYMENT_NAME
 
-      - name: Test kubectl connection
-        run: kubectl get nodes
+      #- name: Test kubectl connection
+      #  run: kubectl get nodes
 
       #- name: Deploy to EKS
       #  env:
