@@ -134,6 +134,9 @@ jobs:
           AWS_REGION: ${{ secrets.AWS_REGION }}
         run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
 
+      - name: Test kubectl connection
+        run: kubectl get nodes
+
       - name: Deploy to Kubernetes
         env:
           K8S_DEPLOYMENT_NAME: ${{ secrets.K8S_DEPLOYMENT_NAME }}
