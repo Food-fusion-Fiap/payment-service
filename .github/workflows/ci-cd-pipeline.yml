@@ -108,6 +108,7 @@ jobs:
           ECR_REPOSITORY: ${{ secrets.ECR_REPOSITORY }}
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}  
           IMAGE_TAG: ${{ steps.commit.outputs.short }}
+          IAM_USER: ${{ secrets.IAM_USER }}
         run: |
           IMAGE_URI="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
           docker build -t $IMAGE_URI .
@@ -119,6 +120,8 @@ jobs:
         run: |
           sed -i 's|placeholder_repository_name|'"$IMAGE_URI"'|' ./infra/golang-app-deployment.yaml
           cat ./infra/golang-app-deployment.yaml
+          sed -i 's|placeholder_iam_user|'"$IAM_USER"'|' ./infra/eks-rbac.yaml
+
 
 
       - name: Install kubectl
