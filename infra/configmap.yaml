@@ -4,4 +4,4 @@ metadata:
   name: configmap-group-18-fastfood-backend
 data:
   POSTGRES_DB: "postgres"
-  POSTGRES_HOST: "postgres.c9emy44wan4g.us-east-1.rds.amazonaws.com"
+  POSTGRES_HOST: "postgres.cao4mee9fcpi.us-east-1.rds.amazonaws.com"
