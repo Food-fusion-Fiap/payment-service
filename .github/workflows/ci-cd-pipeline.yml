@@ -131,7 +131,7 @@ jobs:
         env:
           EKS_CLUSTER_NAME: ${{ secrets.AWS_EKS_CLUSTER_NAME }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
-        run: aws eks update-kubeconfig --name $EKS_CLUSTER_NAME --region $AWS_REGION
+        run: aws eks update-kubeconfig --name payment-service --region us-east-1
 
       - name: Deploy to Kubernetes
         env:
