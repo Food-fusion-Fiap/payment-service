@@ -15,13 +15,13 @@ var (
 )
 
 func ConnectDB() {
-	/*
-		conectionString := "host=localhost user=root password=root dbname=root port=5432 sslmode=disable TimeZone=America/Fortaleza"
-		DB, err = gorm.Open(postgres.Open(conectionString))
-	*/
-	conectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=America/Fortaleza",
+
+	//conectionString := "host=postgres.cao4mee9fcpi.us-east-1.rds.amazonaws.com user=postgres password=rootroot dbname=postgres port=5432 sslmode=require TimeZone=America/Fortaleza"
+	//DB, err = gorm.Open(postgres.Open(conectionString))
+
+	conectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=require TimeZone=America/Fortaleza",
 		os.Getenv("POSTGRES_HOST"), os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB"))
-	fmt.Println(conectionString)
+	//fmt.Println(conectionString)
 	DB, err = gorm.Open(postgres.Open(conectionString))
 
 	if err != nil {
