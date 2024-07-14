@@ -58,3 +58,9 @@ func (r PaymentRepository) UpdateToPaid(paymentID uint) {
 	gorm.DB.First(&payment, paymentID)
 	gorm.DB.Model(&payment).Updates(models.Payment{PaymentStatus: enums.Paid})
 }
+
+func (r PaymentRepository) FindPaymentsQuantity() (uint, error) {
+	var payments []models.Payment
+	result := gorm.DB.Find(&payments)
+	return uint(result.RowsAffected), result.Error
+}

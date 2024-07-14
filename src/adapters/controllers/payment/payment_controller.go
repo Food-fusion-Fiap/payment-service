@@ -127,3 +127,20 @@ func MercadoPagoPayment(c *gin.Context) {
 		c.Status(http.StatusNoContent)
 	}
 }
+
+func GetPaymentsQuantity(c *gin.Context) {
+	usecase := usecases.GetAllPaymentsUseCase{
+		PaymentRepository: &repositories.PaymentRepository{},
+	}
+
+	response, err := usecase.Execute()
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, response)
+}
