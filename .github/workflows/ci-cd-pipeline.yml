@@ -128,7 +128,10 @@ jobs:
           sudo mv kubectl /usr/local/bin/
 
       - name: Update kube config
-        run: aws eks update-kubeconfig --name ${{ vars.AWS_EKS_CLUSTER_NAME }} --region ${{ vars.AWS_REGION }}
+        env:
+          AWS_EKS_CLUSTER_NAME: ${{ secrets.AWS_EKS_CLUSTER_NAME }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: aws eks update-kubeconfig --name $AWS_EKS_CLUSTER_NAME --region $AWS_REGION
 
       - name: Deploy to Kubernetes
         env:
