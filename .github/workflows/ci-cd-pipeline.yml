@@ -119,7 +119,6 @@ jobs:
         run: |
           sed -i 's|placeholder_repository_name|'"$IMAGE_URI"'|' ./infra/golang-app-deployment.yaml
           cat ./infra/golang-app-deployment.yaml
-          sed -i 's|placeholder_iam_user|'"$IAM_USER"'|' ./infra/eks-rbac.yaml
 
       - name: Install kubectl
         run: |
