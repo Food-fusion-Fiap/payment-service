@@ -3,9 +3,9 @@ kind: Service
 metadata:
   name: svc-group-18-fastfood-backend
 spec:
-  type: NodePort
+  type: LoadBalancer
   ports:
-    - port: 8080
-      nodePort: 30201
+    - port: 80
+      targetPort: 8080
   selector:
     app: group-18-fastfood-backend
