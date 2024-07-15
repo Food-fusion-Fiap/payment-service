@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"errors"
 	"net/http"
 	"net/http/httptest"
 	"testing"
@@ -13,7 +14,7 @@ import (
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/get_all_payments"
 )
 
-func TestRequestQrCode(t *testing.T) {
+func TestRequestQrCode_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	useCaseMock := &create_qr_code.CreateQrCodeInterfaceMock{}
@@ -33,7 +34,27 @@ func TestRequestQrCode(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
-func TestGetPaymentsQuantity(t *testing.T) {
+func TestRequestQrCode_Fails(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	useCaseMock := &create_qr_code.CreateQrCodeInterfaceMock{}
+	useCaseMock.On("ExecuteCreateQrCode", mock.Anything).Return("", errors.New("some error"))
+
+	r := gin.Default()
+	r.GET("/payments/qr-code", func(c *gin.Context) {
+		RequestQrCode(c, useCaseMock)
+	})
+
+	req, _ := http.NewRequest(http.MethodGet, "/payments/qr-code", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+}
+
+func TestGetPaymentsQuantity_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
 	useCaseMock := &get_all_payments.GetAllPaymentsInterfaceMock{}
@@ -51,4 +72,24 @@ func TestGetPaymentsQuantity(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusOK, w.Code)
+}
+
+func TestGetPaymentsQuantity_Fails(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	useCaseMock := &get_all_payments.GetAllPaymentsInterfaceMock{}
+	useCaseMock.On("ExecuteGetAllPayments").Return("", errors.New("some error"))
+
+	r := gin.Default()
+	r.GET("/payments/quantity", func(c *gin.Context) {
+		GetPaymentsQuantity(c, useCaseMock)
+	})
+
+	req, _ := http.NewRequest(http.MethodGet, "/payments/quantity", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
