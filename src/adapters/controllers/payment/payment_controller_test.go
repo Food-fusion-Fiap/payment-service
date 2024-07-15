@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/gin-gonic/gin"
+	"github.com/stretchr/testify/assert"
 
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways/mocks"
 	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/payment"
@@ -30,18 +31,26 @@ func TestRequestQrCode(t *testing.T) {
 }
 
 func TestGetPaymentsQuantity(t *testing.T) {
-	// Configurar o gin em modo de teste
 	gin.SetMode(gin.TestMode)
 
-	// Criar o mock do repositório de clientes
-	// Substituir o repositório real pelo mock no usecase
+	paymentRepositoryMock := &mocks.PaymentRepository{}
+
 	useCase := usecases.GetAllPaymentsUseCase{
-		PaymentRepository: &mocks.PaymentRepository{},
+		PaymentRepository: paymentRepositoryMock,
 	}
 
-	// Configurar o controlador com o mock do usecase
+	paymentRepositoryMock.On("FindPaymentsQuantity").Return(uint(3), nil)
+
 	r := gin.Default()
-	r.GET("/quantity", func(c *gin.Context) {
+	r.GET("/payments/quantity", func(c *gin.Context) {
 		GetPaymentsQuantity(c, useCase)
 	})
+
+	req, _ := http.NewRequest(http.MethodGet, "/payments/quantity", nil)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
 }
