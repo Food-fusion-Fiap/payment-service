@@ -1,6 +1,7 @@
 package controllers
 
 import (
+	"bytes"
 	"errors"
 	"net/http"
 	"net/http/httptest"
@@ -174,6 +175,144 @@ func TestCheckOrderPaymentStatus_Fails(t *testing.T) {
 	r.ServeHTTP(w, req)
 
 	assert.Equal(t, http.StatusBadRequest, w.Code)
+}
+
+func TestMercadoPagoPayment_Success(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock.On("ExecuteWithOrderId", mock.Anything).Return("success", nil)
+
+	r := gin.Default()
+	r.POST("/payments", func(c *gin.Context) {
+		MercadoPagoPayment(c, useCaseMock)
+	})
+
+	inputJSON := `{
+	   "additional_info":{
+		  "external_reference": "2000"
+	   },
+	   "amount":2,
+	   "caller_id":200,
+	   "client_id":"2000",
+	   "id": "23",
+	   "payment":{
+		  "id": "30",
+		  "state":"awaiting_payment",
+		  "type":"type"
+	   },
+	   "state":"FINISHED"
+	}`
+	reqBody := bytes.NewBufferString(inputJSON)
+
+	req, _ := http.NewRequest(http.MethodPost, "/payments", reqBody)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusOK, w.Code)
+}
+
+func TestMercadoPagoPayment_InvalidJson(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock.On("ExecuteWithOrderId", mock.Anything).Return("success", nil)
+
+	r := gin.Default()
+	r.POST("/payments", func(c *gin.Context) {
+		MercadoPagoPayment(c, useCaseMock)
+	})
+
+	inputJSON := `{
+	   "additional_info":{
+		  "external_reference": "2000"
+	   },,
+	}`
+	reqBody := bytes.NewBufferString(inputJSON)
+
+	req, _ := http.NewRequest(http.MethodPost, "/payments", reqBody)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
+}
+
+func TestMercadoPagoPayment_ValidJson_FailsOnPayment(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock.On("ExecuteWithOrderId", mock.Anything).Return("", errors.New("some error"))
+
+	r := gin.Default()
+	r.POST("/payments", func(c *gin.Context) {
+		MercadoPagoPayment(c, useCaseMock)
+	})
+
+	inputJSON := `{
+	   "additional_info":{
+		  "external_reference": "2000"
+	   },
+	   "amount":2,
+	   "caller_id":200,
+	   "client_id":"2000",
+	   "id": "23",
+	   "payment":{
+		  "id": "30",
+		  "state":"awaiting_payment",
+		  "type":"type"
+	   },
+	   "state":"FINISHED"
+	}`
+	reqBody := bytes.NewBufferString(inputJSON)
+
+	req, _ := http.NewRequest(http.MethodPost, "/payments", reqBody)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusBadRequest, w.Code)
+}
+
+func TestMercadoPagoPayment_ValidJson_ErrorOnMercadoPago(t *testing.T) {
+	gin.SetMode(gin.TestMode)
+
+	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock.On("ExecuteWithOrderId", mock.Anything).Return("", errors.New("some error"))
+
+	r := gin.Default()
+	r.POST("/payments", func(c *gin.Context) {
+		MercadoPagoPayment(c, useCaseMock)
+	})
+
+	inputJSON := `{
+	   "additional_info":{
+		  "external_reference": "2000"
+	   },
+	   "amount":2,
+	   "caller_id":200,
+	   "client_id":"2000",
+	   "id": "23",
+	   "payment":{
+		  "id": "30",
+		  "state":"awaiting_payment",
+		  "type":"type"
+	   },
+	   "state":"ERROR"
+	}`
+	reqBody := bytes.NewBufferString(inputJSON)
+
+	req, _ := http.NewRequest(http.MethodPost, "/payments", reqBody)
+	req.Header.Set("Content-Type", "application/json")
+	w := httptest.NewRecorder()
+
+	r.ServeHTTP(w, req)
+
+	assert.Equal(t, http.StatusNoContent, w.Code)
 }
 
 func TestGetPaymentsQuantity_Success(t *testing.T) {
