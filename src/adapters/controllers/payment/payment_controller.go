@@ -7,22 +7,14 @@ import (
 	"github.com/gin-gonic/gin"
 
 	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/payment"
-	"github.com/CAVAh/api-tech-challenge/src/infra/db/repositories"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/mercado_pago"
-	"github.com/CAVAh/api-tech-challenge/src/infra/external/order_service_mock"
 )
 
-func RequestQrCode(c *gin.Context) {
+func RequestQrCode(c *gin.Context, useCase usecases.CreateQrCodeUseCase) {
 	value, _ := c.GetQuery("orderId")
 	orderId, _ := strconv.Atoi(value)
 
-	usecase := usecases.CreateQrCodeUseCase{
-		PaymentInterface:  &mercado_pago.MercadoPagoIntegration{},
-		PaymentRepository: &repositories.PaymentRepository{},
-		OrderInterface:    &order_service_mock.OrderInterface{},
-	}
-
-	response, err := usecase.Execute(uint(orderId))
+	response, err := useCase.Execute(uint(orderId))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -34,14 +26,10 @@ func RequestQrCode(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func Pay(c *gin.Context) {
+func Pay(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	id, _ := strconv.Atoi(c.Params.ByName("id"))
 
-	usecase := usecases.MakePaymentUseCase{
-		PaymentRepository: &repositories.PaymentRepository{},
-	}
-
-	response, err := usecase.ExecuteWithOrderId(uint(id))
+	response, err := useCase.ExecuteWithOrderId(uint(id))
 	//TODO: avisar pro microserviço de order que foi pago
 
 	if err != nil {
@@ -54,14 +42,10 @@ func Pay(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func PayQrCode(c *gin.Context) {
+func PayQrCode(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	qrCode := c.Params.ByName("qr")
 
-	usecase := usecases.MakePaymentUseCase{
-		PaymentRepository: &repositories.PaymentRepository{},
-	}
-
-	response, err := usecase.ExecuteWithQrCode(qrCode)
+	response, err := useCase.ExecuteWithQrCode(qrCode)
 	//TODO: avisar pro microserviço de order que foi pago
 
 	if err != nil {
@@ -74,15 +58,11 @@ func PayQrCode(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func CheckOrderPaymentStatus(c *gin.Context) {
+func CheckOrderPaymentStatus(c *gin.Context, useCase usecases.CheckPaymentStatusUsecase) {
 	value, _ := c.GetQuery("orderId")
 	orderId, _ := strconv.Atoi(value)
 
-	usecase := usecases.CheckPaymentStatusUsecase{
-		PaymentRepository: &repositories.PaymentRepository{},
-	}
-
-	response, err := usecase.Execute(uint(orderId))
+	response, err := useCase.Execute(uint(orderId))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -94,7 +74,7 @@ func CheckOrderPaymentStatus(c *gin.Context) {
 	c.JSON(http.StatusOK, response)
 }
 
-func MercadoPagoPayment(c *gin.Context) {
+func MercadoPagoPayment(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	var inputDto mercado_pago.PostPayment
 
 	if err := c.ShouldBindJSON(&inputDto); err != nil {
@@ -110,12 +90,8 @@ func MercadoPagoPayment(c *gin.Context) {
 	//já que o external reference não é mandado. Mas o id de dentro da aplicação estará em external reference
 	var orderId, _ = strconv.Atoi(inputDto.AdditionalInfo.ExternalReference)
 
-	usecase := usecases.MakePaymentUseCase{
-		PaymentRepository: &repositories.PaymentRepository{},
-	}
-
 	if inputDto.State == mercado_pago.Finished {
-		response, err := usecase.ExecuteWithOrderId(uint(orderId))
+		response, err := useCase.ExecuteWithOrderId(uint(orderId))
 		//TODO: avisar pro microserviço de order que foi pago
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
