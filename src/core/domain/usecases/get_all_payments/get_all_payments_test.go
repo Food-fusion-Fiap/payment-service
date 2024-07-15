@@ -18,7 +18,7 @@ func TestGetAllPaymentsUseCase(t *testing.T) {
 		pr.On("FindPaymentsQuantity").Return(mockedQuantity, nil)
 	}
 
-	t.Run("create qr code sucess case", func(t *testing.T) {
+	t.Run("get all payments", func(t *testing.T) {
 		paymentRepositoryMock := &mocks.PaymentRepository{}
 
 		prepare(t, paymentRepositoryMock)
@@ -35,12 +35,14 @@ func TestGetAllPaymentsUseCase(t *testing.T) {
 }
 
 func TestGetAllPaymentsUseCase_Fails(t *testing.T) {
+	mockedQuantity := uint(2)
+
 	prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
 		t.Helper()
-		pr.On("FindPaymentsQuantity").Return("", errors.New("test error"))
+		pr.On("FindPaymentsQuantity").Return(mockedQuantity, errors.New("fail"))
 	}
 
-	t.Run("fails", func(t *testing.T) {
+	t.Run("get all payments - fails", func(t *testing.T) {
 		paymentRepositoryMock := &mocks.PaymentRepository{}
 
 		prepare(t, paymentRepositoryMock)
