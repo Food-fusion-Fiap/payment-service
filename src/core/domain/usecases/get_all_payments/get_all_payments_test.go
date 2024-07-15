@@ -1,6 +1,7 @@
 package get_all_payments
 
 import (
+	"errors"
 	"strconv"
 	"testing"
 
@@ -30,5 +31,26 @@ func TestGetAllPaymentsUseCase(t *testing.T) {
 
 		assert.Equal(t, strconv.Itoa(int(mockedQuantity)), output)
 		assert.Equal(t, nil, err)
+	})
+}
+
+func TestGetAllPaymentsUseCase_Fails(t *testing.T) {
+	prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
+		t.Helper()
+		pr.On("FindPaymentsQuantity").Return("", errors.New("test error"))
+	}
+
+	t.Run("fails", func(t *testing.T) {
+		paymentRepositoryMock := &mocks.PaymentRepository{}
+
+		prepare(t, paymentRepositoryMock)
+
+		usecase := GetAllPaymentsUseCase{
+			PaymentRepository: paymentRepositoryMock,
+		}
+
+		output, _ := usecase.ExecuteGetAllPayments()
+
+		assert.Equal(t, "", output)
 	})
 }

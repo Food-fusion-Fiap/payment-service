@@ -1,6 +1,7 @@
 package check_payment_status
 
 import (
+	"errors"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -81,5 +82,29 @@ func TestCheckPaymentStatus_UnknownStatus(t *testing.T) {
 
 		assert.Equal(t, "Status desconhecido", output)
 		assert.Equal(t, nil, err)
+	})
+}
+
+func TestCheckPaymentStatus_DoNotFindOrder(t *testing.T) {
+	mockOrderId := uint(407)
+	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
+
+	paymentRepositoryMock := &mocks.PaymentRepository{}
+
+	usecase := CheckPaymentStatusUsecase{
+		PaymentRepository: paymentRepositoryMock,
+	}
+
+	t.Run("order not found", func(t *testing.T) {
+		mockPayment.PaymentStatus = "errado"
+		prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
+			t.Helper()
+			pr.On("FindByOrderId", mockOrderId).Return(mockPayment, errors.New("do not found"))
+		}
+		prepare(t, paymentRepositoryMock)
+
+		output, _ := usecase.ExecuteCheckPaymentStatus(mockOrderId)
+
+		assert.Equal(t, "", output)
 	})
 }
