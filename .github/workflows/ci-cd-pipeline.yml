@@ -141,18 +141,3 @@ jobs:
           kubectl config get-contexts
           kubectl apply -f ./infra --validate=false
           kubectl rollout status deployment/$K8S_DEPLOYMENT_NAME
-
-      #- name: Test kubectl connection
-      #  run: kubectl get nodes
-
-      #- name: Deploy to EKS
-      #  env:
-      #    ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}  
-      #    IMAGE_TAG: ${{ steps.commit.outputs.short }}
-      #  run: |
-      #    kubectl apply -f infra/configmap.yaml --validate=false
-      #    kubectl apply -f infra/secrets.yaml --validate=false
-      #    kubectl apply -f infra/golang-app-deployment.yaml --validate=false
-      #    sed -i.bak "s|DOCKER_IMAGE|$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG|g" infra/golang-app-deployment.yaml && \
-      #    kubectl apply -f infra/golang-app-deployment.yaml --validate=false
-      #    kubectl apply -f infra/services.yaml --validate=false
