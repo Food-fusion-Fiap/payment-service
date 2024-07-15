@@ -1,14 +1,14 @@
 apiVersion: autoscaling/v2
 kind: HorizontalPodAutoscaler
 metadata:
-  name: group-18-fastfood-backend-hpa
+  name: payment-service-backend-hpa
   labels:
-    app: group-18-fastfood-backend-hpa
+    app: payment-service-backend-hpa
 spec:
   scaleTargetRef:
     apiVersion: apps/v1
     kind: Deployment
-    name: group-18-fastfood-backend
+    name: payment-service-backend
   minReplicas: 3
   maxReplicas: 5
   metrics:
