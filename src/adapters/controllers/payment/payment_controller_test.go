@@ -34,6 +34,26 @@ func TestRequestQrCode_Success(t *testing.T) {
 	assert.Equal(t, http.StatusOK, w.Code)
 }
 
+//func TestPay_Success(t *testing.T) {
+//	gin.SetMode(gin.TestMode)
+//
+//	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+//	useCaseMock.On("ExecuteCreateQrCode", mock.Anything).Return("mockQrCode", nil)
+//
+//	r := gin.Default()
+//	r.GET("/payments/qr-code", func(c *gin.Context) {
+//		RequestQrCode(c, useCaseMock)
+//	})
+//
+//	req, _ := http.NewRequest(http.MethodGet, "/payments/qr-code", nil)
+//	req.Header.Set("Content-Type", "application/json")
+//	w := httptest.NewRecorder()
+//
+//	r.ServeHTTP(w, req)
+//
+//	assert.Equal(t, http.StatusOK, w.Code)
+//}
+
 func TestRequestQrCode_Fails(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
@@ -51,7 +71,7 @@ func TestRequestQrCode_Fails(t *testing.T) {
 
 	r.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusOK, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 func TestGetPaymentsQuantity_Success(t *testing.T) {
