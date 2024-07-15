@@ -1,7 +1,8 @@
-package usecases
+package make_payment
 
 import (
 	"errors"
+
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/enums"

@@ -6,15 +6,18 @@ import (
 
 	"github.com/gin-gonic/gin"
 
-	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/payment"
+	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/check_payment_status"
+	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/create_qr_code"
+	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/get_all_payments"
+	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/make_payment"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/mercado_pago"
 )
 
-func RequestQrCode(c *gin.Context, useCase usecases.CreateQrCodeUseCase) {
+func RequestQrCode(c *gin.Context, useCase create_qr_code.CreateQrCodeUseCase) {
 	value, _ := c.GetQuery("orderId")
 	orderId, _ := strconv.Atoi(value)
 
-	response, err := useCase.Execute(uint(orderId))
+	response, err := useCase.ExecuteCreateQrCode(uint(orderId))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -58,11 +61,11 @@ func PayQrCode(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	c.JSON(http.StatusOK, response)
 }
 
-func CheckOrderPaymentStatus(c *gin.Context, useCase usecases.CheckPaymentStatusUsecase) {
+func CheckOrderPaymentStatus(c *gin.Context, useCase check_payment_status.CheckPaymentStatusUsecase) {
 	value, _ := c.GetQuery("orderId")
 	orderId, _ := strconv.Atoi(value)
 
-	response, err := useCase.Execute(uint(orderId))
+	response, err := useCase.ExecuteCheckPaymentStatus(uint(orderId))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -106,8 +109,8 @@ func MercadoPagoPayment(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	}
 }
 
-func GetPaymentsQuantity(c *gin.Context, useCase usecases.GetAllPaymentsUseCase) {
-	response, err := useCase.Execute()
+func GetPaymentsQuantity(c *gin.Context, useCase get_all_payments.GetAllPaymentsUseCase) {
+	response, err := useCase.ExecuteGetAllPayments()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

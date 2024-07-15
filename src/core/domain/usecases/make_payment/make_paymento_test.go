@@ -1,12 +1,15 @@
-package usecases
+package make_payment
 
 import (
 	"errors"
+
+	"testing"
+
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways/mocks"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/enums"
+
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Success(t *testing.T) {

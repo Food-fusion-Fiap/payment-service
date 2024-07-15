@@ -1,4 +1,4 @@
-package usecases
+package create_qr_code
 
 import (
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways"
@@ -12,7 +12,7 @@ type CreateQrCodeUseCase struct {
 	OrderInterface    gateways.OrderInterface
 }
 
-func (r *CreateQrCodeUseCase) Execute(orderId uint) (string, error) {
+func (r *CreateQrCodeUseCase) ExecuteCreateQrCode(orderId uint) (string, error) {
 	var err error
 
 	order, err := r.OrderInterface.GetOrder(orderId)

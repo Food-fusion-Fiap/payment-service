@@ -1,11 +1,13 @@
-package usecases
+package check_payment_status
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways/mocks"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/enums"
-	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestCheckPaymentStatus_PaidStatus(t *testing.T) {
@@ -25,7 +27,7 @@ func TestCheckPaymentStatus_PaidStatus(t *testing.T) {
 		}
 		prepare(t, paymentRepositoryMock)
 
-		output, err := usecase.Execute(mockOrderId)
+		output, err := usecase.ExecuteCheckPaymentStatus(mockOrderId)
 
 		assert.Equal(t, "Pedido pago", output)
 		assert.Equal(t, nil, err)
@@ -50,7 +52,7 @@ func TestCheckPaymentStatus_StatusAwaitingPayment(t *testing.T) {
 		}
 		prepare(t, paymentRepositoryMock)
 
-		output, err := usecase.Execute(mockOrderId)
+		output, err := usecase.ExecuteCheckPaymentStatus(mockOrderId)
 
 		assert.Equal(t, "Pedido aguardando pagamento", output)
 		assert.Equal(t, nil, err)
@@ -75,7 +77,7 @@ func TestCheckPaymentStatus_UnknownStatus(t *testing.T) {
 		}
 		prepare(t, paymentRepositoryMock)
 
-		output, err := usecase.Execute(mockOrderId)
+		output, err := usecase.ExecuteCheckPaymentStatus(mockOrderId)
 
 		assert.Equal(t, "Status desconhecido", output)
 		assert.Equal(t, nil, err)

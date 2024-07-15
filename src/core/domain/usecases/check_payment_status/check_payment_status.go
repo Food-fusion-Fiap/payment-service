@@ -1,4 +1,4 @@
-package usecases
+package check_payment_status
 
 import (
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways"
@@ -9,7 +9,7 @@ type CheckPaymentStatusUsecase struct {
 	PaymentRepository gateways.PaymentRepository
 }
 
-func (r *CheckPaymentStatusUsecase) Execute(orderId uint) (string, error) {
+func (r *CheckPaymentStatusUsecase) ExecuteCheckPaymentStatus(orderId uint) (string, error) {
 	payment, err := r.PaymentRepository.FindByOrderId(orderId)
 	if err != nil {
 		return "", err

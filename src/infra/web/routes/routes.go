@@ -6,7 +6,10 @@ import (
 	"github.com/gin-gonic/gin"
 
 	controller "github.com/CAVAh/api-tech-challenge/src/adapters/controllers/payment"
-	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/payment"
+	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/check_payment_status"
+	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/create_qr_code"
+	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/get_all_payments"
+	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/make_payment"
 	"github.com/CAVAh/api-tech-challenge/src/infra/db/repositories"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/mercado_pago"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/order_service_mock"
@@ -15,11 +18,11 @@ import (
 func HandleRequests() {
 	router := gin.Default()
 
-	getAllPaymentsUseCase := usecases.GetAllPaymentsUseCase{
+	getAllPaymentsUseCase := get_all_payments.GetAllPaymentsUseCase{
 		PaymentRepository: &repositories.PaymentRepository{},
 	}
 
-	createQrCodeUseCase := usecases.CreateQrCodeUseCase{
+	createQrCodeUseCase := create_qr_code.CreateQrCodeUseCase{
 		PaymentInterface:  &mercado_pago.MercadoPagoIntegration{},
 		PaymentRepository: &repositories.PaymentRepository{},
 		OrderInterface:    &order_service_mock.OrderInterface{},
@@ -29,7 +32,7 @@ func HandleRequests() {
 		PaymentRepository: &repositories.PaymentRepository{},
 	}
 
-	checkPaymentStatusUsecase := usecases.CheckPaymentStatusUsecase{
+	checkPaymentStatusUsecase := check_payment_status.CheckPaymentStatusUsecase{
 		PaymentRepository: &repositories.PaymentRepository{},
 	}
 

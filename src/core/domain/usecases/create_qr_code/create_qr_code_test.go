@@ -1,12 +1,14 @@
-package usecases
+package create_qr_code
 
 import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/mock"
+
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways/mocks"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/enums"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
-	"testing"
 )
 
 func TestCreateQRCodeUseCase(t *testing.T) {
@@ -39,7 +41,7 @@ func TestCreateQRCodeUseCase(t *testing.T) {
 			OrderInterface:    orderInterfaceMock,
 		}
 
-		output, err := usecase.Execute(mockOrderId)
+		output, err := usecase.ExecuteCreateQrCode(mockOrderId)
 
 		assert.Equal(t, mockQrCode, output)
 		assert.Equal(t, nil, err)
