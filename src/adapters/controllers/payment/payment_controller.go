@@ -1,13 +1,15 @@
 package controllers
 
 import (
+	"net/http"
+	"strconv"
+
+	"github.com/gin-gonic/gin"
+
 	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/payment"
 	"github.com/CAVAh/api-tech-challenge/src/infra/db/repositories"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/mercado_pago"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/order_service_mock"
-	"github.com/gin-gonic/gin"
-	"net/http"
-	"strconv"
 )
 
 func RequestQrCode(c *gin.Context) {
@@ -128,12 +130,8 @@ func MercadoPagoPayment(c *gin.Context) {
 	}
 }
 
-func GetPaymentsQuantity(c *gin.Context) {
-	usecase := usecases.GetAllPaymentsUseCase{
-		PaymentRepository: &repositories.PaymentRepository{},
-	}
-
-	response, err := usecase.Execute()
+func GetPaymentsQuantity(c *gin.Context, useCase usecases.GetAllPaymentsUseCase) {
+	response, err := useCase.Execute()
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
