@@ -6,14 +6,21 @@ import (
 
 	"github.com/gin-gonic/gin"
 
+	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/check_payment_status"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/create_qr_code"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/get_all_payments"
-	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/make_payment"
+	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/make_payment"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/mercado_pago"
 )
 
-func RequestQrCode(c *gin.Context, useCase create_qr_code.CreateQrCodeUseCase) {
+type PaymentController struct {
+	PaymentInterface  gateways.PaymentInterface
+	PaymentRepository gateways.PaymentRepository
+	OrderInterface    gateways.OrderInterface
+}
+
+func RequestQrCode(c *gin.Context, useCase create_qr_code.CreateQrCodeInterface) {
 	value, _ := c.GetQuery("orderId")
 	orderId, _ := strconv.Atoi(value)
 
@@ -29,7 +36,7 @@ func RequestQrCode(c *gin.Context, useCase create_qr_code.CreateQrCodeUseCase) {
 	c.JSON(http.StatusOK, response)
 }
 
-func Pay(c *gin.Context, useCase usecases.MakePaymentUseCase) {
+func Pay(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	id, _ := strconv.Atoi(c.Params.ByName("id"))
 
 	response, err := useCase.ExecuteWithOrderId(uint(id))
@@ -45,7 +52,7 @@ func Pay(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	c.JSON(http.StatusOK, response)
 }
 
-func PayQrCode(c *gin.Context, useCase usecases.MakePaymentUseCase) {
+func PayQrCode(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	qrCode := c.Params.ByName("qr")
 
 	response, err := useCase.ExecuteWithQrCode(qrCode)
@@ -61,7 +68,7 @@ func PayQrCode(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	c.JSON(http.StatusOK, response)
 }
 
-func CheckOrderPaymentStatus(c *gin.Context, useCase check_payment_status.CheckPaymentStatusUsecase) {
+func CheckOrderPaymentStatus(c *gin.Context, useCase check_payment_status.CheckPaymentStatusUseCaseInterface) {
 	value, _ := c.GetQuery("orderId")
 	orderId, _ := strconv.Atoi(value)
 
@@ -77,7 +84,7 @@ func CheckOrderPaymentStatus(c *gin.Context, useCase check_payment_status.CheckP
 	c.JSON(http.StatusOK, response)
 }
 
-func MercadoPagoPayment(c *gin.Context, useCase usecases.MakePaymentUseCase) {
+func MercadoPagoPayment(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	var inputDto mercado_pago.PostPayment
 
 	if err := c.ShouldBindJSON(&inputDto); err != nil {
@@ -109,7 +116,7 @@ func MercadoPagoPayment(c *gin.Context, useCase usecases.MakePaymentUseCase) {
 	}
 }
 
-func GetPaymentsQuantity(c *gin.Context, useCase get_all_payments.GetAllPaymentsUseCase) {
+func GetPaymentsQuantity(c *gin.Context, useCase get_all_payments.GetAllPaymentsInterface) {
 	response, err := useCase.ExecuteGetAllPayments()
 
 	if err != nil {
