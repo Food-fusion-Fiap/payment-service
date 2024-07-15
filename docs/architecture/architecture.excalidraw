@@ -877,11 +877,11 @@
       "locked": false,
       "fontSize": 17.839776851405215,
       "fontFamily": 2,
-      "text": "svc-group-18-fastfood-backend\nnode-port: 30201",
+      "text": "svc-payment-service-backend\nnode-port: 30201",
       "textAlign": "center",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "svc-group-18-fastfood-backend\nnode-port: 30201",
+      "originalText": "svc-payment-service-backend\nnode-port: 30201",
       "lineHeight": 1.15
     },
     {
@@ -2688,11 +2688,11 @@
       "locked": false,
       "fontSize": 17.634185299738576,
       "fontFamily": 2,
-      "text": "group-18-fastfood-backend",
+      "text": "payment-service-backend",
       "textAlign": "left",
       "verticalAlign": "top",
       "containerId": null,
-      "originalText": "group-18-fastfood-backend",
+      "originalText": "payment-service-backend",
       "lineHeight": 1.15
     },
     {
