@@ -30,6 +30,7 @@ func HandleRequests() {
 
 	makePaymentUseCase := usecases.MakePaymentUseCase{
 		PaymentRepository: &repositories.PaymentRepository{},
+		OrderInterface:    &order_service_mock.OrderInterface{},
 	}
 
 	checkPaymentStatusUsecase := check_payment_status.CheckPaymentStatusUsecase{

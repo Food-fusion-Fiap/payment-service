@@ -42,31 +42,21 @@ func (_m *OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 }
 
 // NotifyStatusChange provides a mock function with given fields: orderId
-func (_m *OrderInterface) NotifyStatusChange(orderId uint) (entities.Order, error) {
+func (_m *OrderInterface) NotifyStatusChange(orderId uint) error {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
 		panic("no return value specified for NotifyStatusChange")
 	}
 
-	var r0 entities.Order
-	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (entities.Order, error)); ok {
-		return rf(orderId)
-	}
-	if rf, ok := ret.Get(0).(func(uint) entities.Order); ok {
+	var r0 error
+	if rf, ok := ret.Get(0).(func(uint) error); ok {
 		r0 = rf(orderId)
 	} else {
-		r0 = ret.Get(0).(entities.Order)
+		r0 = ret.Error(0)
 	}
 
-	if rf, ok := ret.Get(1).(func(uint) error); ok {
-		r1 = rf(orderId)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
+	return r0
 }
 
 // NewOrderInterface creates a new instance of OrderInterface. It also registers a testing interface on the mock and a cleanup function to assert the mocks expectations.

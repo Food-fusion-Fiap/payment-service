@@ -10,6 +10,7 @@ import (
 
 type MakePaymentUseCase struct {
 	PaymentRepository gateways.PaymentRepository
+	OrderInterface    gateways.OrderInterface
 }
 
 func (r *MakePaymentUseCase) ExecuteWithQrCode(qrCode string) (string, error) {
@@ -20,7 +21,9 @@ func (r *MakePaymentUseCase) ExecuteWithQrCode(qrCode string) (string, error) {
 		return "", err
 	}
 
-	return r.UpdateStatus(payment)
+	out, err := r.UpdateStatus(payment)
+
+	return out, err
 }
 
 func (r *MakePaymentUseCase) ExecuteWithOrderId(orderId uint) (string, error) {
@@ -31,13 +34,19 @@ func (r *MakePaymentUseCase) ExecuteWithOrderId(orderId uint) (string, error) {
 		return "", errors.New("pagamento não encontrado")
 	}
 
-	return r.UpdateStatus(payment)
+	out, err := r.UpdateStatus(payment)
+
+	return out, err
 }
 
 func (r *MakePaymentUseCase) UpdateStatus(payment entities.Payment) (string, error) {
 	if payment.PaymentStatus == enums.AwaitingPayment {
 		payment.PaymentStatus = enums.Paid
 		r.PaymentRepository.UpdateToPaid(payment.ID)
+		err := r.OrderInterface.NotifyStatusChange(payment.OrderID)
+		if err != nil {
+			return "", err
+		}
 		return "Pago", nil
 	} else {
 		return "", errors.New("não foi possível efetuar o pagamento: o pagamento já foi pago")

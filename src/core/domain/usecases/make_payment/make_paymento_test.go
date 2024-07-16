@@ -2,7 +2,6 @@ package make_payment
 
 import (
 	"errors"
-
 	"testing"
 
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways/mocks"
@@ -16,19 +15,21 @@ func TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Success(t *testing.T) {
 	mockQrCode := "mockQrCode"
 	mockPayment := entities.Payment{PaymentStatus: enums.AwaitingPayment, ID: 2, OrderID: 30}
 
-	prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
+	prepare := func(t *testing.T, pr *mocks.PaymentRepository, oi *mocks.OrderInterface) {
 		t.Helper()
 		pr.On("FindByQrCode", mockQrCode).Return(mockPayment, nil)
 		pr.On("UpdateToPaid", mockPayment.ID).Return()
-
+		oi.On("NotifyStatusChange", mockPayment.OrderID).Return(nil)
 	}
 
-	t.Run("when success findbyQRCode", func(t *testing.T) {
+	t.Run("TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Success", func(t *testing.T) {
 		paymentRepositoryMock := &mocks.PaymentRepository{}
-		prepare(t, paymentRepositoryMock)
+		orderInterfaceMock := &mocks.OrderInterface{}
+		prepare(t, paymentRepositoryMock, orderInterfaceMock)
 
 		usecase := MakePaymentUseCase{
 			PaymentRepository: paymentRepositoryMock,
+			OrderInterface:    orderInterfaceMock,
 		}
 
 		output, err := usecase.ExecuteWithQrCode(mockQrCode)
@@ -42,19 +43,21 @@ func TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Fail(t *testing.T) {
 	mockQrCode := "mockQrCode"
 	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
 
-	prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
+	prepare := func(t *testing.T, pr *mocks.PaymentRepository, oi *mocks.OrderInterface) {
 		t.Helper()
 		pr.On("FindByQrCode", mockQrCode).Return(mockPayment, nil)
 		pr.On("UpdateToPaid", mockPayment.ID).Return()
-
+		oi.On("NotifyStatusChange", mockPayment.OrderID).Return(nil)
 	}
 
-	t.Run("when fails findbyQRCode", func(t *testing.T) {
+	t.Run("TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Fail", func(t *testing.T) {
 		paymentRepositoryMock := &mocks.PaymentRepository{}
-		prepare(t, paymentRepositoryMock)
+		orderInterfaceMock := &mocks.OrderInterface{}
+		prepare(t, paymentRepositoryMock, orderInterfaceMock)
 
 		usecase := MakePaymentUseCase{
 			PaymentRepository: paymentRepositoryMock,
+			OrderInterface:    orderInterfaceMock,
 		}
 
 		output, err := usecase.ExecuteWithQrCode(mockQrCode)
@@ -68,19 +71,21 @@ func TestMakePaymentUseCase_FindByOrderIdAndUpdatePayment_Success(t *testing.T) 
 	mockOrderId := uint(407)
 	mockPayment := entities.Payment{PaymentStatus: enums.AwaitingPayment, ID: 2, OrderID: 30}
 
-	prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
+	prepare := func(t *testing.T, pr *mocks.PaymentRepository, oi *mocks.OrderInterface) {
 		t.Helper()
 		pr.On("FindByOrderId", mockOrderId).Return(mockPayment, nil)
 		pr.On("UpdateToPaid", mockPayment.ID).Return()
-
+		oi.On("NotifyStatusChange", mockPayment.OrderID).Return(nil)
 	}
 
 	t.Run("when success FindByOrderId", func(t *testing.T) {
 		paymentRepositoryMock := &mocks.PaymentRepository{}
-		prepare(t, paymentRepositoryMock)
+		orderInterfaceMock := &mocks.OrderInterface{}
+		prepare(t, paymentRepositoryMock, orderInterfaceMock)
 
 		usecase := MakePaymentUseCase{
 			PaymentRepository: paymentRepositoryMock,
+			OrderInterface:    orderInterfaceMock,
 		}
 
 		output, err := usecase.ExecuteWithOrderId(mockOrderId)
@@ -94,19 +99,21 @@ func TestMakePaymentUseCase_FindByOrderIdAndUpdatePayment_Fail(t *testing.T) {
 	mockOrderId := uint(407)
 	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
 
-	prepare := func(t *testing.T, pr *mocks.PaymentRepository) {
+	prepare := func(t *testing.T, pr *mocks.PaymentRepository, oi *mocks.OrderInterface) {
 		t.Helper()
 		pr.On("FindByOrderId", mockOrderId).Return(mockPayment, nil)
 		pr.On("UpdateToPaid", mockPayment.ID).Return()
-
+		oi.On("NotifyStatusChange", mockPayment.OrderID).Return(nil)
 	}
 
 	t.Run("when fails findbyQROrderId", func(t *testing.T) {
 		paymentRepositoryMock := &mocks.PaymentRepository{}
-		prepare(t, paymentRepositoryMock)
+		orderInterfaceMock := &mocks.OrderInterface{}
+		prepare(t, paymentRepositoryMock, orderInterfaceMock)
 
 		usecase := MakePaymentUseCase{
 			PaymentRepository: paymentRepositoryMock,
+			OrderInterface:    orderInterfaceMock,
 		}
 
 		output, err := usecase.ExecuteWithOrderId(mockOrderId)
