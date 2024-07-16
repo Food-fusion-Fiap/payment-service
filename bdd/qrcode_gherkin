@@ -1,0 +1,4 @@
+Cenário: Cliente requisita um código QR
+    Dado que o cliente já realizou um pedido e possui o orderId
+    Quando ele mandar o orderId para o microserviço de pagamento
+    Então ele deverá recber um código QR
