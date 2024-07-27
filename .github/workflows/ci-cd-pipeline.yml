@@ -105,7 +105,7 @@ jobs:
       - name: Build, tag, and push Docker image to Amazon ECR
         env:
           ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
-          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}  
+          ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ steps.commit.outputs.short }}
         run: |
           IMAGE_URI="$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG"
@@ -114,6 +114,7 @@ jobs:
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
       
       - name: Set up variables from ssm
+        id: set-ssm
         env:
           SERVICE_NAME: ${{ vars.K8S_DEPLOYMENT_NAME }}
         uses: dkershner6/aws-ssm-getparameters-action@v2
@@ -125,6 +126,11 @@ jobs:
             withDecryption: "true" # defaults to true
 
       - name: Update Kubernetes configuration
+        env:
+          DB_NAME: ${{ steps.set-ssm.outputs.DB_NAME }}
+          DB_HOST: ${{ steps.set-ssm.outputs.DB_HOST }}
+          DB_USERNAME: ${{ steps.set-ssm.outputs.DB_USERNAME }}
+          DB_PASSWORD: ${{ steps.set-ssm.outputs.DB_PASSWORD }}
         run: |
           sed -i 's|placeholder_repository_name|'"$IMAGE_URI"'|' ./infra/golang-app-deployment.yaml
           sed -i 's|aws_ssm_db_name|'"$DB_NAME"'|' ./infra/configmap.yaml
