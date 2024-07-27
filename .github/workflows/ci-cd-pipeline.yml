@@ -136,7 +136,7 @@ jobs:
           DB_NAME=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_name" --with-decryption --output json | jq '.Parameter | .Value')
           DB_HOST=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_host" --with-decryption --output json | jq '.Parameter | .Value')
           DB_USERNAME=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_username" --with-decryption --output json | jq '.Parameter | .Value')
-          DB_PASSWORD=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_password" --with-decryption --output json | jq '.Parameter | .Value')]
+          DB_PASSWORD=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_password" --with-decryption --output json | jq '.Parameter | .Value')
         
           sed -i 's|placeholder_repository_name|'"$IMAGE_URI"'|' ./infra/golang-app-deployment.yaml
           sed -i 's|aws_ssm_db_name|'"$DB_NAME"'|' ./infra/configmap.yaml
