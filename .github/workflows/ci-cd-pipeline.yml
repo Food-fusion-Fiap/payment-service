@@ -131,6 +131,9 @@ jobs:
           sed -i 's|aws_ssm_db_host|'"$DB_HOST"'|' ./infra/configmap.yaml
           sed -i 's|aws_ssm_db_username|'"$DB_USERNAME"'|' ./infra/secrets.yaml
           sed -i 's|aws_ssm_db_password|'"$DB_PASSWORD"'|' ./infra/secrets.yaml
+          cat ./infra/golang-app-deployment.yaml
+          cat ./infra/configmap.yaml
+          cat ./infra/secrets.yaml
 
       - name: Install kubectl
         run: |
