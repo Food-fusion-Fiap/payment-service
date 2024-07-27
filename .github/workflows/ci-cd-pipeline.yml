@@ -144,6 +144,7 @@ jobs:
           sed -i 's|aws_ssm_db_username|'"$DB_USERNAME"'|' ./infra/secrets.yaml
           sed -i 's|aws_ssm_db_password|'"$DB_PASSWORD"'|' ./infra/secrets.yaml
           cat ./infra/configmap.yaml
+          echo "----------------------"
           cat ./infra/secrets.yaml
 
       - name: Install kubectl
