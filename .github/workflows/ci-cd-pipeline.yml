@@ -119,10 +119,10 @@ jobs:
           SERVICE_NAME: ${{ vars.K8S_DEPLOYMENT_NAME }}
         uses: dkershner6/aws-ssm-getparameters-action@v2
         with:
-            parameterPairs: "/$SERVICE_NAME/aws_ssm_db_name = DB_NAME,
-                             /$SERVICE_NAME/aws_ssm_db_host = DB_HOST,
-                             /$SERVICE_NAME/aws_ssm_db_username = DB_USERNAME,
-                             /$SERVICE_NAME/aws_ssm_db_password = DB_PASSWORD"
+            parameterPairs: "/$SERVICE_NAME/db_name = DB_NAME,
+                             /$SERVICE_NAME/db_host = DB_HOST,
+                             /$SERVICE_NAME/db_username = DB_USERNAME,
+                             /$SERVICE_NAME/db_password = DB_PASSWORD"
             withDecryption: "true" # defaults to true
 
       - name: Update Kubernetes configuration
