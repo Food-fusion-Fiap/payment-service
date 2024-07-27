@@ -112,26 +112,10 @@ jobs:
           docker build -t $IMAGE_URI .
           docker push $IMAGE_URI
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
-      
-      # - name: Set up variables from ssm
-      #   id: set-ssm
-      #   env:
-      #     SERVICE_NAME: ${{ vars.K8S_DEPLOYMENT_NAME }}
-      #   uses: dkershner6/aws-ssm-getparameters-action@v2
-      #   with:
-      #       parameterPairs: "/$SERVICE_NAME/db_name = DB_NAME,
-      #                        /$SERVICE_NAME/db_host = DB_HOST,
-      #                        /$SERVICE_NAME/db_username = DB_USERNAME,
-      #                        /$SERVICE_NAME/db_password = DB_PASSWORD"
-      #       withDecryption: "true" # defaults to true
 
       - name: Update Kubernetes configuration
         env:
           SERVICE_NAME: ${{ vars.K8S_DEPLOYMENT_NAME }}
-        #   DB_NAME: ${{ steps.set-ssm.outputs.DB_NAME }}
-        #   DB_HOST: ${{ steps.set-ssm.outputs.DB_HOST }}
-        #   DB_USERNAME: ${{ steps.set-ssm.outputs.DB_USERNAME }}
-        #   DB_PASSWORD: ${{ steps.set-ssm.outputs.DB_PASSWORD }}
         run: |
           DB_NAME=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_name" --with-decryption --output json | jq '.Parameter | .Value')
           DB_HOST=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_host" --with-decryption --output json | jq '.Parameter | .Value')
@@ -143,9 +127,6 @@ jobs:
           sed -i 's|aws_ssm_db_host|'"$DB_HOST"'|' ./infra/configmap.yaml
           sed -i 's|aws_ssm_db_username|'"$DB_USERNAME"'|' ./infra/secrets.yaml
           sed -i 's|aws_ssm_db_password|'"$DB_PASSWORD"'|' ./infra/secrets.yaml
-          cat ./infra/configmap.yaml
-          echo "----------------------"
-          cat ./infra/secrets.yaml
 
       - name: Install kubectl
         run: |
