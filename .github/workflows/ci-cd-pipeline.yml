@@ -112,11 +112,25 @@ jobs:
           docker build -t $IMAGE_URI .
           docker push $IMAGE_URI
           echo "IMAGE_URI=$IMAGE_URI" >> $GITHUB_ENV
-        
+      
+      - name: Set up variables from ssm
+        env:
+          SERVICE_NAME: ${{ vars.K8S_DEPLOYMENT_NAME }}
+        uses: dkershner6/aws-ssm-getparameters-action@v2
+        with:
+            parameterPairs: "/$SERVICE_NAME/aws_ssm_db_name = DB_NAME,
+                             /$SERVICE_NAME/aws_ssm_db_host = DB_HOST,
+                             /$SERVICE_NAME/aws_ssm_db_username = DB_USERNAME,
+                             /$SERVICE_NAME/aws_ssm_db_password = DB_PASSWORD"
+            withDecryption: "true" # defaults to true
+
       - name: Update Kubernetes configuration
         run: |
           sed -i 's|placeholder_repository_name|'"$IMAGE_URI"'|' ./infra/golang-app-deployment.yaml
-          cat ./infra/golang-app-deployment.yaml
+          sed -i 's|aws_ssm_db_name|'"$DB_NAME"'|' ./infra/configmap.yaml
+          sed -i 's|aws_ssm_db_host|'"$DB_HOST"'|' ./infra/configmap.yaml
+          sed -i 's|aws_ssm_db_username|'"$DB_USERNAME"'|' ./infra/secrets.yaml
+          sed -i 's|aws_ssm_db_password|'"$DB_PASSWORD"'|' ./infra/secrets.yaml
 
       - name: Install kubectl
         run: |
