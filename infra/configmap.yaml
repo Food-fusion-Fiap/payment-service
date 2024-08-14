@@ -3,5 +3,5 @@ kind: ConfigMap
 metadata:
   name: configmap-payment-service-backend
 data:
-  POSTGRES_DB: "postgrespayment"
-  POSTGRES_HOST: "postgrespayment.cao4mee9fcpi.us-east-1.rds.amazonaws.com"
+  POSTGRES_DB: aws_ssm_db_name
+  POSTGRES_HOST: aws_ssm_db_host
