@@ -92,9 +92,9 @@ func MountMercadoPagoRequest(order entities.Order) MarcadoPagoRequest {
 		t.Year(), t.Month(), t.Day(), t.Hour(), t.Minute(), t.Second(), t.Nanosecond()%1000)
 
 	return MarcadoPagoRequest{
-		Title:             fmt.Sprintf("Pedido #%d", order.ID),
-		Description:       fmt.Sprintf("Pedido #%d", order.ID),
-		ExternalReference: fmt.Sprintf("%d", order.ID),
+		Title:             fmt.Sprintf("Pedido #%s", order.ID),
+		Description:       fmt.Sprintf("Pedido #%s", order.ID),
+		ExternalReference: fmt.Sprintf("%s", order.ID),
 		Items:             items,
 		TotalAmount:       totalAmount,
 		ExpirationDate:    fiveMinExpiration,

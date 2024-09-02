@@ -12,7 +12,7 @@ import (
 )
 
 func TestCreateQRCodeUseCase(t *testing.T) {
-	mockOrderId := uint(905)
+	mockOrderId := "randomuuid905"
 	mockOrder := entities.Order{ID: mockOrderId}
 	mockQrCode := "mockqrcode"
 	mockPayment := entities.Payment{

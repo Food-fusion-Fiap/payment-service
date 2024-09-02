@@ -97,7 +97,7 @@ func TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Fail(t *testing.T) {
 //}
 
 func TestMakePaymentUseCase_FindByOrderIdAndUpdatePayment_Fail(t *testing.T) {
-	mockOrderId := uint(407)
+	mockOrderId := "randomuuid407"
 	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: "randomuuid"}
 
 	prepare := func(t *testing.T, pr *gateways.MockPaymentRepository, pb *gateways.MockPubSubInterface) {
