@@ -9,7 +9,7 @@ type CheckPaymentStatusUsecase struct {
 	PaymentRepository gateways.PaymentRepository
 }
 
-func (r *CheckPaymentStatusUsecase) ExecuteCheckPaymentStatus(orderId uint) (string, error) {
+func (r *CheckPaymentStatusUsecase) ExecuteCheckPaymentStatus(orderId string) (string, error) {
 	payment, err := r.PaymentRepository.FindByOrderId(orderId)
 	if err != nil {
 		return "", err

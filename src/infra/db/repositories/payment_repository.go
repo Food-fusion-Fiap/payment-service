@@ -30,7 +30,7 @@ func (r PaymentRepository) Create(e entities.Payment) (string, error) {
 	return "Criado com sucesso", nil
 }
 
-func (r PaymentRepository) FindByOrderId(orderId uint) (entities.Payment, error) {
+func (r PaymentRepository) FindByOrderId(orderId string) (entities.Payment, error) {
 	var payment models.Payment
 	//se o orderId tiver mais que um QRCode associado, pega o último
 	gorm.DB.Where("order_id = ?", orderId).Order("created_at DESC").Limit(1).Find(&payment)

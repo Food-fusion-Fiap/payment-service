@@ -1,6 +1,6 @@
 package gateways
 
 type PubSubInterface interface {
-	NotifyPaymentApproved(orderId uint) error
-	NotifyPaymentError(orderId uint) error
+	NotifyPaymentApproved(orderId string) error
+	NotifyPaymentError(orderId string) error
 }

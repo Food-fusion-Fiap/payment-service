@@ -13,7 +13,7 @@ type MockMakePaymentInterface struct {
 }
 
 // ExecuteApprovedPaymentWithOrderId provides a mock function with given fields: orderId
-func (_m *MockMakePaymentInterface) ExecuteApprovedPaymentWithOrderId(orderId uint) (string, error) {
+func (_m *MockMakePaymentInterface) ExecuteApprovedPaymentWithOrderId(orderId string) (string, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
@@ -22,16 +22,16 @@ func (_m *MockMakePaymentInterface) ExecuteApprovedPaymentWithOrderId(orderId ui
 
 	var r0 string
 	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (string, error)); ok {
+	if rf, ok := ret.Get(0).(func(string) (string, error)); ok {
 		return rf(orderId)
 	}
-	if rf, ok := ret.Get(0).(func(uint) string); ok {
+	if rf, ok := ret.Get(0).(func(string) string); ok {
 		r0 = rf(orderId)
 	} else {
 		r0 = ret.Get(0).(string)
 	}
 
-	if rf, ok := ret.Get(1).(func(uint) error); ok {
+	if rf, ok := ret.Get(1).(func(string) error); ok {
 		r1 = rf(orderId)
 	} else {
 		r1 = ret.Error(1)
@@ -69,7 +69,7 @@ func (_m *MockMakePaymentInterface) ExecuteApprovedPaymentWithQrCode(qrCode stri
 }
 
 // ExecuteErrorPaymentWithOrderId provides a mock function with given fields: orderId
-func (_m *MockMakePaymentInterface) ExecuteErrorPaymentWithOrderId(orderId uint) (string, error) {
+func (_m *MockMakePaymentInterface) ExecuteErrorPaymentWithOrderId(orderId string) (string, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
@@ -78,16 +78,16 @@ func (_m *MockMakePaymentInterface) ExecuteErrorPaymentWithOrderId(orderId uint)
 
 	var r0 string
 	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (string, error)); ok {
+	if rf, ok := ret.Get(0).(func(string) (string, error)); ok {
 		return rf(orderId)
 	}
-	if rf, ok := ret.Get(0).(func(uint) string); ok {
+	if rf, ok := ret.Get(0).(func(string) string); ok {
 		r0 = rf(orderId)
 	} else {
 		r0 = ret.Get(0).(string)
 	}
 
-	if rf, ok := ret.Get(1).(func(uint) error); ok {
+	if rf, ok := ret.Get(1).(func(string) error); ok {
 		r1 = rf(orderId)
 	} else {
 		r1 = ret.Error(1)

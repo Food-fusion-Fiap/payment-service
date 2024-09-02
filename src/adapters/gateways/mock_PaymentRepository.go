@@ -41,7 +41,7 @@ func (_m *MockPaymentRepository) Create(order entities.Payment) (string, error) 
 }
 
 // FindByOrderId provides a mock function with given fields: orderId
-func (_m *MockPaymentRepository) FindByOrderId(orderId uint) (entities.Payment, error) {
+func (_m *MockPaymentRepository) FindByOrderId(orderId string) (entities.Payment, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
@@ -50,16 +50,16 @@ func (_m *MockPaymentRepository) FindByOrderId(orderId uint) (entities.Payment, 
 
 	var r0 entities.Payment
 	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (entities.Payment, error)); ok {
+	if rf, ok := ret.Get(0).(func(string) (entities.Payment, error)); ok {
 		return rf(orderId)
 	}
-	if rf, ok := ret.Get(0).(func(uint) entities.Payment); ok {
+	if rf, ok := ret.Get(0).(func(string) entities.Payment); ok {
 		r0 = rf(orderId)
 	} else {
 		r0 = ret.Get(0).(entities.Payment)
 	}
 
-	if rf, ok := ret.Get(1).(func(uint) error); ok {
+	if rf, ok := ret.Get(1).(func(string) error); ok {
 		r1 = rf(orderId)
 	} else {
 		r1 = ret.Error(1)
