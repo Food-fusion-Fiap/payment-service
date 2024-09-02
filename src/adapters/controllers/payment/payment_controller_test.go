@@ -20,7 +20,7 @@ import (
 func TestRequestQrCode_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &create_qr_code.CreateQrCodeInterfaceMock{}
+	useCaseMock := &create_qr_code.MockCreateQrCodeInterface{}
 	useCaseMock.On("ExecuteCreateQrCode", mock.Anything).Return("mockQrCode", nil)
 
 	r := gin.Default()
@@ -40,7 +40,7 @@ func TestRequestQrCode_Success(t *testing.T) {
 func TestRequestQrCode_Fails(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &create_qr_code.CreateQrCodeInterfaceMock{}
+	useCaseMock := &create_qr_code.MockCreateQrCodeInterface{}
 	useCaseMock.On("ExecuteCreateQrCode", mock.Anything).Return("", errors.New("some error"))
 
 	r := gin.Default()
@@ -60,7 +60,7 @@ func TestRequestQrCode_Fails(t *testing.T) {
 func TestPay_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
 	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("success", nil)
 
 	r := gin.Default()
@@ -80,7 +80,7 @@ func TestPay_Success(t *testing.T) {
 func TestPay_Fails(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
 	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("", errors.New("some error"))
 
 	r := gin.Default()
@@ -100,7 +100,7 @@ func TestPay_Fails(t *testing.T) {
 func TestPayQrCode_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
 	useCaseMock.On("ExecuteApprovedPaymentWithQrCode", mock.Anything).Return("success", nil)
 
 	r := gin.Default()
@@ -120,7 +120,7 @@ func TestPayQrCode_Success(t *testing.T) {
 func TestPayQrCode_Fails(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
 	useCaseMock.On("ExecuteApprovedPaymentWithQrCode", mock.Anything).Return("", errors.New("some error"))
 
 	r := gin.Default()
@@ -140,7 +140,7 @@ func TestPayQrCode_Fails(t *testing.T) {
 func TestCheckOrderPaymentStatus_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &check_payment_status.CheckPaymentStatusUseCaseInterfaceMock{}
+	useCaseMock := &check_payment_status.MockCheckPaymentStatusUseCaseInterface{}
 	useCaseMock.On("ExecuteCheckPaymentStatus", mock.Anything).Return("success", nil)
 
 	r := gin.Default()
@@ -160,7 +160,7 @@ func TestCheckOrderPaymentStatus_Success(t *testing.T) {
 func TestCheckOrderPaymentStatus_Fails(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &check_payment_status.CheckPaymentStatusUseCaseInterfaceMock{}
+	useCaseMock := &check_payment_status.MockCheckPaymentStatusUseCaseInterface{}
 	useCaseMock.On("ExecuteCheckPaymentStatus", mock.Anything).Return("", errors.New("some error"))
 
 	r := gin.Default()
@@ -180,7 +180,7 @@ func TestCheckOrderPaymentStatus_Fails(t *testing.T) {
 func TestMercadoPagoPayment_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
 	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("success", nil)
 
 	r := gin.Default()
@@ -217,7 +217,7 @@ func TestMercadoPagoPayment_Success(t *testing.T) {
 func TestMercadoPagoPayment_InvalidJson(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
 	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("success", nil)
 
 	r := gin.Default()
@@ -244,7 +244,7 @@ func TestMercadoPagoPayment_InvalidJson(t *testing.T) {
 func TestMercadoPagoPayment_ValidJson_FailsOnPayment(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
 	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("", errors.New("some error"))
 
 	r := gin.Default()
@@ -281,8 +281,8 @@ func TestMercadoPagoPayment_ValidJson_FailsOnPayment(t *testing.T) {
 func TestMercadoPagoPayment_ValidJson_ErrorOnMercadoPago(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &make_payment.MakePaymentInterfaceMock{}
-	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("", errors.New("some error"))
+	useCaseMock := &make_payment.MockMakePaymentInterface{}
+	useCaseMock.On("ExecuteErrorPaymentWithOrderId", mock.Anything).Return("", errors.New("some error"))
 
 	r := gin.Default()
 	r.POST("/payments", func(c *gin.Context) {
@@ -312,13 +312,13 @@ func TestMercadoPagoPayment_ValidJson_ErrorOnMercadoPago(t *testing.T) {
 
 	r.ServeHTTP(w, req)
 
-	assert.Equal(t, http.StatusNoContent, w.Code)
+	assert.Equal(t, http.StatusBadRequest, w.Code)
 }
 
 func TestGetPaymentsQuantity_Success(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &get_all_payments.GetAllPaymentsInterfaceMock{}
+	useCaseMock := &get_all_payments.MockGetAllPaymentsInterface{}
 	useCaseMock.On("ExecuteGetAllPayments").Return("mockResponse", nil)
 
 	r := gin.Default()
@@ -338,7 +338,7 @@ func TestGetPaymentsQuantity_Success(t *testing.T) {
 func TestGetPaymentsQuantity_Fails(t *testing.T) {
 	gin.SetMode(gin.TestMode)
 
-	useCaseMock := &get_all_payments.GetAllPaymentsInterfaceMock{}
+	useCaseMock := &get_all_payments.MockGetAllPaymentsInterface{}
 	useCaseMock.On("ExecuteGetAllPayments").Return("", errors.New("some error"))
 
 	r := gin.Default()
