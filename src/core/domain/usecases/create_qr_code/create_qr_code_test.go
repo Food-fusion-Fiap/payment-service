@@ -1,12 +1,12 @@
 package create_qr_code
 
 import (
+	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/mock"
 
-	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways/mocks"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/enums"
 )
@@ -21,7 +21,7 @@ func TestCreateQRCodeUseCase(t *testing.T) {
 		PaymentStatus: enums.AwaitingPayment,
 	}
 
-	prepare := func(t *testing.T, pi *mocks.PaymentInterface, pr *mocks.PaymentRepository, oi *mocks.OrderInterface) {
+	prepare := func(t *testing.T, pi *gateways.MockPaymentInterface, pr *gateways.MockPaymentRepository, oi *gateways.MockOrderInterface) {
 		t.Helper()
 		oi.On("GetOrder", mockOrderId).Return(mockOrder, nil)
 		pi.On("CreatePayment", mockOrder).Return(mockQrCode, nil)
@@ -29,9 +29,9 @@ func TestCreateQRCodeUseCase(t *testing.T) {
 	}
 
 	t.Run("create qr code sucess case", func(t *testing.T) {
-		paymentInterfaceMock := &mocks.PaymentInterface{}
-		paymentRepositoryMock := &mocks.PaymentRepository{}
-		orderInterfaceMock := &mocks.OrderInterface{}
+		paymentInterfaceMock := &gateways.MockPaymentInterface{}
+		paymentRepositoryMock := &gateways.MockPaymentRepository{}
+		orderInterfaceMock := &gateways.MockOrderInterface{}
 
 		prepare(t, paymentInterfaceMock, paymentRepositoryMock, orderInterfaceMock)
 

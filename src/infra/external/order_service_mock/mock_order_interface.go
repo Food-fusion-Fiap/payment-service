@@ -41,7 +41,3 @@ func (r OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 
 	return order, nil
 }
-
-func (r OrderInterface) NotifyStatusChange(orderId uint) error {
-	return nil
-}

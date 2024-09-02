@@ -11,9 +11,10 @@ import (
 type MakePaymentUseCase struct {
 	PaymentRepository gateways.PaymentRepository
 	OrderInterface    gateways.OrderInterface
+	PubSubInterface   gateways.PubSubInterface
 }
 
-func (r *MakePaymentUseCase) ExecuteWithQrCode(qrCode string) (string, error) {
+func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithQrCode(qrCode string) (string, error) {
 	var err error
 
 	payment, err := r.PaymentRepository.FindByQrCode(qrCode)
@@ -21,12 +22,12 @@ func (r *MakePaymentUseCase) ExecuteWithQrCode(qrCode string) (string, error) {
 		return "", err
 	}
 
-	out, err := r.UpdateStatus(payment)
+	out, err := r.UpdateToStatusApproved(payment)
 
 	return out, err
 }
 
-func (r *MakePaymentUseCase) ExecuteWithOrderId(orderId uint) (string, error) {
+func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithOrderId(orderId uint) (string, error) {
 	var err error
 
 	payment, err := r.PaymentRepository.FindByOrderId(orderId)
@@ -34,16 +35,16 @@ func (r *MakePaymentUseCase) ExecuteWithOrderId(orderId uint) (string, error) {
 		return "", errors.New("pagamento não encontrado")
 	}
 
-	out, err := r.UpdateStatus(payment)
+	out, err := r.UpdateToStatusApproved(payment)
 
 	return out, err
 }
 
-func (r *MakePaymentUseCase) UpdateStatus(payment entities.Payment) (string, error) {
+func (r *MakePaymentUseCase) UpdateToStatusApproved(payment entities.Payment) (string, error) {
 	if payment.PaymentStatus == enums.AwaitingPayment {
 		payment.PaymentStatus = enums.Paid
 		r.PaymentRepository.UpdateToPaid(payment.ID)
-		err := r.OrderInterface.NotifyStatusChange(payment.OrderID)
+		err := r.PubSubInterface.NotifyPaymentApproved(payment.OrderID)
 		if err != nil {
 			return "", err
 		}
@@ -51,4 +52,13 @@ func (r *MakePaymentUseCase) UpdateStatus(payment entities.Payment) (string, err
 	} else {
 		return "", errors.New("não foi possível efetuar o pagamento: o pagamento já foi pago")
 	}
+}
+
+func (r *MakePaymentUseCase) ExecuteErrorPaymentWithOrderId(orderId uint) (string, error) {
+	//TODO: this service can be improved and update payment status to error in DB. For now, we only notify a topic
+	err := r.PubSubInterface.NotifyPaymentError(orderId)
+	if err != nil {
+		return "", err
+	}
+	return "Erro", nil
 }

@@ -39,8 +39,7 @@ func RequestQrCode(c *gin.Context, useCase create_qr_code.CreateQrCodeInterface)
 func Pay(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	id, _ := strconv.Atoi(c.Params.ByName("id"))
 
-	response, err := useCase.ExecuteWithOrderId(uint(id))
-	//TODO: avisar pro microserviço de order que foi pago
+	response, err := useCase.ExecuteApprovedPaymentWithOrderId(uint(id))
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -55,8 +54,7 @@ func Pay(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 func PayQrCode(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	qrCode := c.Params.ByName("qr")
 
-	response, err := useCase.ExecuteWithQrCode(qrCode)
-	//TODO: avisar pro microserviço de order que foi pago
+	response, err := useCase.ExecuteApprovedPaymentWithQrCode(qrCode)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -86,6 +84,8 @@ func CheckOrderPaymentStatus(c *gin.Context, useCase check_payment_status.CheckP
 
 func MercadoPagoPayment(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	var inputDto mercado_pago.PostPayment
+	var err error
+	var response string
 
 	if err := c.ShouldBindJSON(&inputDto); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
@@ -101,19 +101,18 @@ func MercadoPagoPayment(c *gin.Context, useCase make_payment.MakePaymentInterfac
 	var orderId, _ = strconv.Atoi(inputDto.AdditionalInfo.ExternalReference)
 
 	if inputDto.State == mercado_pago.Finished {
-		response, err := useCase.ExecuteWithOrderId(uint(orderId))
-		//TODO: avisar pro microserviço de order que foi pago
-		if err != nil {
-			c.JSON(http.StatusBadRequest, gin.H{
-				"error": err.Error(),
-			})
-			return
-		}
-		c.JSON(http.StatusOK, response)
+		response, err = useCase.ExecuteApprovedPaymentWithOrderId(uint(orderId))
 	} else if inputDto.State == mercado_pago.Error || inputDto.State == mercado_pago.Canceled {
-		//TODO: avisar pro microserviço de order que foi cancelado
-		c.Status(http.StatusNoContent)
+		response, err = useCase.ExecuteErrorPaymentWithOrderId(uint(orderId))
 	}
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+	c.JSON(http.StatusOK, response)
 }
 
 func GetPaymentsQuantity(c *gin.Context, useCase get_all_payments.GetAllPaymentsInterface) {

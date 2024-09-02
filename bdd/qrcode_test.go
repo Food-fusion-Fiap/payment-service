@@ -1,7 +1,7 @@
 package bdd
 
 import (
-	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways/mocks"
+	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/enums"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/create_qr_code"
@@ -26,7 +26,7 @@ func TestRequestQrCode(t *testing.T) {
 	qrCode := "qrcodedocliente"
 	clientPayment := GetMockedPayment(clientOderId, qrCode)
 
-	prepare := func(t *testing.T, pi *mocks.PaymentInterface, pr *mocks.PaymentRepository, oi *mocks.OrderInterface) {
+	prepare := func(t *testing.T, pi *gateways.MockPaymentInterface, pr *gateways.MockPaymentRepository, oi *gateways.MockOrderInterface) {
 		t.Helper()
 		oi.On("GetOrder", clientOderId).Return(clientOrder, nil)
 		pi.On("CreatePayment", clientOrder).Return(qrCode, nil)
@@ -34,9 +34,9 @@ func TestRequestQrCode(t *testing.T) {
 	}
 
 	t.Run("create qr code sucess case", func(t *testing.T) {
-		paymentInterfaceMock := &mocks.PaymentInterface{}
-		paymentRepositoryMock := &mocks.PaymentRepository{}
-		orderInterfaceMock := &mocks.OrderInterface{}
+		paymentInterfaceMock := &gateways.MockPaymentInterface{}
+		paymentRepositoryMock := &gateways.MockPaymentRepository{}
+		orderInterfaceMock := &gateways.MockOrderInterface{}
 
 		prepare(t, paymentInterfaceMock, paymentRepositoryMock, orderInterfaceMock)
 
