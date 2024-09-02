@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-func GetMockedPayment(clientOderId uint, qrCode string) entities.Payment {
+func GetMockedPayment(clientOderId string, qrCode string) entities.Payment {
 	return entities.Payment{
 		OrderID:       clientOderId,
 		QrCode:        qrCode,
@@ -20,7 +20,7 @@ func GetMockedPayment(clientOderId uint, qrCode string) entities.Payment {
 
 func TestRequestQrCode(t *testing.T) {
 	//Dado que o cliente já realizou um pedido e possui o orderId
-	clientOderId := uint(905)
+	clientOderId := "uint(905)"
 
 	clientOrder := entities.Order{ID: clientOderId}
 	qrCode := "qrcodedocliente"
