@@ -14,11 +14,11 @@ type MakePaymentInterfaceMock struct {
 }
 
 // ExecuteWithOrderId provides a mock function with given fields: orderId
-func (_m *MakePaymentInterfaceMock) ExecuteWithOrderId(orderId uint) (string, error) {
+func (_m *MakePaymentInterfaceMock) ExecuteApprovedPaymentWithOrderId(orderId uint) (string, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
-		panic("no return value specified for ExecuteWithOrderId")
+		panic("no return value specified for ExecuteApprovedPaymentWithOrderId")
 	}
 
 	var r0 string
@@ -42,11 +42,11 @@ func (_m *MakePaymentInterfaceMock) ExecuteWithOrderId(orderId uint) (string, er
 }
 
 // ExecuteWithQrCode provides a mock function with given fields: qrCode
-func (_m *MakePaymentInterfaceMock) ExecuteWithQrCode(qrCode string) (string, error) {
+func (_m *MakePaymentInterfaceMock) ExecuteApprovedPaymentWithQrCode(qrCode string) (string, error) {
 	ret := _m.Called(qrCode)
 
 	if len(ret) == 0 {
-		panic("no return value specified for ExecuteWithQrCode")
+		panic("no return value specified for ExecuteApprovedPaymentWithQrCode")
 	}
 
 	var r0 string
@@ -70,11 +70,11 @@ func (_m *MakePaymentInterfaceMock) ExecuteWithQrCode(qrCode string) (string, er
 }
 
 // UpdateStatus provides a mock function with given fields: payment
-func (_m *MakePaymentInterfaceMock) UpdateStatus(payment entities.Payment) (string, error) {
+func (_m *MakePaymentInterfaceMock) UpdateToStatusApproved(payment entities.Payment) (string, error) {
 	ret := _m.Called(payment)
 
 	if len(ret) == 0 {
-		panic("no return value specified for UpdateStatus")
+		panic("no return value specified for UpdateToStatusApproved")
 	}
 
 	var r0 string

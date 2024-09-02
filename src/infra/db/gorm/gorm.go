@@ -17,7 +17,7 @@ var (
 func ConnectDB() {
 
 	//Local development
-	//conectionString := "host=postgres.cao4mee9fcpi.us-east-1.rds.amazonaws.com user=postgres password=rootroot dbname=postgres port=5432 sslmode=require TimeZone=America/Fortaleza"
+	//conectionString := "host=localhost user=root password=root dbname=root port=5432 sslmode=disable TimeZone=America/Fortaleza"
 	//DB, err = gorm.Open(postgres.Open(conectionString))
 
 	conectionString := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=require TimeZone=America/Fortaleza",

@@ -42,7 +42,7 @@ func (_m *OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 }
 
 // NotifyStatusChange provides a mock function with given fields: orderId
-func (_m *OrderInterface) NotifyStatusChange(orderId uint) error {
+func (_m *OrderInterface) NotifyPaymentApproved(orderId uint) error {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {

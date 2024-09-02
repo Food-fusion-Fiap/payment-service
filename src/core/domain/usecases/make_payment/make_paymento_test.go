@@ -32,7 +32,7 @@ func TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Success(t *testing.T) {
 			OrderInterface:    orderInterfaceMock,
 		}
 
-		output, err := usecase.ExecuteWithQrCode(mockQrCode)
+		output, err := usecase.ExecuteApprovedPaymentWithQrCode(mockQrCode)
 
 		assert.Equal(t, "Pago", output)
 		assert.Equal(t, nil, err)
@@ -60,7 +60,7 @@ func TestMakePaymentUseCase_FindByQrCodeAndUpdatePayment_Fail(t *testing.T) {
 			OrderInterface:    orderInterfaceMock,
 		}
 
-		output, err := usecase.ExecuteWithQrCode(mockQrCode)
+		output, err := usecase.ExecuteApprovedPaymentWithQrCode(mockQrCode)
 
 		assert.Equal(t, output, "")
 		assert.Equal(t, errors.New("não foi possível efetuar o pagamento: o pagamento já foi pago"), err)
@@ -88,7 +88,7 @@ func TestMakePaymentUseCase_FindByOrderIdAndUpdatePayment_Success(t *testing.T) 
 			OrderInterface:    orderInterfaceMock,
 		}
 
-		output, err := usecase.ExecuteWithOrderId(mockOrderId)
+		output, err := usecase.ExecuteApprovedPaymentWithOrderId(mockOrderId)
 
 		assert.Equal(t, "Pago", output)
 		assert.Equal(t, nil, err)
@@ -116,7 +116,7 @@ func TestMakePaymentUseCase_FindByOrderIdAndUpdatePayment_Fail(t *testing.T) {
 			OrderInterface:    orderInterfaceMock,
 		}
 
-		output, err := usecase.ExecuteWithOrderId(mockOrderId)
+		output, err := usecase.ExecuteApprovedPaymentWithOrderId(mockOrderId)
 
 		assert.Equal(t, output, "")
 		assert.Equal(t, errors.New("não foi possível efetuar o pagamento: o pagamento já foi pago"), err)
