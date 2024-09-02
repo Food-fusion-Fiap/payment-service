@@ -18,6 +18,9 @@ func (r OrderInterface) GetOrder(orderId string) (entities.Order, error) {
 		fmt.Println(err, "Erro ao conectar com order-service")
 		log.Panic(err, "Erro ao conectar com order-service")
 	}
+
+	fmt.Println(resp)
+
 	defer func(Body io.ReadCloser) {
 		err := Body.Close()
 		if err != nil {
