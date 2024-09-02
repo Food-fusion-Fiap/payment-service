@@ -12,7 +12,7 @@ type CreateQrCodeUseCase struct {
 	OrderInterface    gateways.OrderInterface
 }
 
-func (r *CreateQrCodeUseCase) ExecuteCreateQrCode(orderId uint) (string, error) {
+func (r *CreateQrCodeUseCase) ExecuteCreateQrCode(orderId string) (string, error) {
 	var err error
 
 	order, err := r.OrderInterface.GetOrder(orderId)

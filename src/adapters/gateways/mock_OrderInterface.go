@@ -13,7 +13,7 @@ type MockOrderInterface struct {
 }
 
 // GetOrder provides a mock function with given fields: orderId
-func (_m *MockOrderInterface) GetOrder(orderId uint) (entities.Order, error) {
+func (_m *MockOrderInterface) GetOrder(orderId string) (entities.Order, error) {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
@@ -22,16 +22,16 @@ func (_m *MockOrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 
 	var r0 entities.Order
 	var r1 error
-	if rf, ok := ret.Get(0).(func(uint) (entities.Order, error)); ok {
+	if rf, ok := ret.Get(0).(func(string) (entities.Order, error)); ok {
 		return rf(orderId)
 	}
-	if rf, ok := ret.Get(0).(func(uint) entities.Order); ok {
+	if rf, ok := ret.Get(0).(func(string) entities.Order); ok {
 		r0 = rf(orderId)
 	} else {
 		r0 = ret.Get(0).(entities.Order)
 	}
 
-	if rf, ok := ret.Get(1).(func(uint) error); ok {
+	if rf, ok := ret.Get(1).(func(string) error); ok {
 		r1 = rf(orderId)
 	} else {
 		r1 = ret.Error(1)

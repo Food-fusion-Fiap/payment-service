@@ -11,7 +11,7 @@ import (
 type OrderInterface struct {
 }
 
-func (r OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
+func (r OrderInterface) GetOrder(orderId string) (entities.Order, error) {
 	//TODO: terminar
 	resp, err := http.Get("http://order-service.svc.cluster.local:30202/")
 	if err != nil {
@@ -26,5 +26,5 @@ func (r OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 		}
 	}(resp.Body)
 
-	return entities.Order{ID: 1}, nil
+	return entities.Order{ID: "aaa"}, nil
 }

@@ -12,8 +12,8 @@ import (
 )
 
 func TestCheckPaymentStatus_PaidStatus(t *testing.T) {
-	mockOrderId := uint(407)
-	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
+	mockOrderId := "randomuuid"
+	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: "randomuuid2"}
 
 	paymentRepositoryMock := &gateways.MockPaymentRepository{}
 
@@ -36,8 +36,8 @@ func TestCheckPaymentStatus_PaidStatus(t *testing.T) {
 }
 
 func TestCheckPaymentStatus_StatusAwaitingPayment(t *testing.T) {
-	mockOrderId := uint(407)
-	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
+	mockOrderId := "randomuuid"
+	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: "randomuuid2"}
 
 	paymentRepositoryMock := &gateways.MockPaymentRepository{}
 
@@ -61,8 +61,8 @@ func TestCheckPaymentStatus_StatusAwaitingPayment(t *testing.T) {
 }
 
 func TestCheckPaymentStatus_UnknownStatus(t *testing.T) {
-	mockOrderId := uint(407)
-	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
+	mockOrderId := "randomuuid"
+	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: "randomuuid2"}
 
 	paymentRepositoryMock := &gateways.MockPaymentRepository{}
 
@@ -86,8 +86,8 @@ func TestCheckPaymentStatus_UnknownStatus(t *testing.T) {
 }
 
 func TestCheckPaymentStatus_DoNotFindOrder(t *testing.T) {
-	mockOrderId := uint(407)
-	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: 30}
+	mockOrderId := "randomuuid"
+	mockPayment := entities.Payment{PaymentStatus: enums.Paid, ID: 2, OrderID: "randomuuid2"}
 
 	paymentRepositoryMock := &gateways.MockPaymentRepository{}
 

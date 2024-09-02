@@ -12,7 +12,7 @@ import (
 type PubSubInterface struct {
 }
 
-func (r PubSubInterface) NotifyPaymentApproved(orderId uint) error {
+func (r PubSubInterface) NotifyPaymentApproved(orderId string) error {
 	sdkConfig, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		fmt.Println("Couldn't load default configuration. Have you set up your AWS account?")
@@ -31,7 +31,7 @@ func (r PubSubInterface) NotifyPaymentApproved(orderId uint) error {
 	return nil
 }
 
-func (r PubSubInterface) NotifyPaymentError(orderId uint) error {
+func (r PubSubInterface) NotifyPaymentError(orderId string) error {
 	sdkConfig, err := config.LoadDefaultConfig(context.TODO())
 	if err != nil {
 		fmt.Println("Couldn't load default configuration. Have you set up your AWS account?")

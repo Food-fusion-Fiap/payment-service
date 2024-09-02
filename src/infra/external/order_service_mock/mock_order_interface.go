@@ -1,6 +1,7 @@
 package order_service_mock
 
 import (
+	"fmt"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"math/rand"
 )
@@ -8,7 +9,7 @@ import (
 type OrderInterface struct {
 }
 
-func (r OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
+func (r OrderInterface) GetOrder(orderId string) (entities.Order, error) {
 	var water = entities.Product{
 		ID:          1,
 		Name:        "Água",
@@ -35,7 +36,7 @@ func (r OrderInterface) GetOrder(orderId uint) (entities.Order, error) {
 	}
 
 	var order = entities.Order{
-		ID:       uint(rand.Int()),
+		ID:       fmt.Sprintf("aaaa%d", rand.Int()),
 		Products: []entities.ProductInsideOrder{waterInsideOrder, sandwichInsideOrder},
 	}
 

@@ -27,7 +27,7 @@ func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithQrCode(qrCode string) (st
 	return out, err
 }
 
-func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithOrderId(orderId uint) (string, error) {
+func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithOrderId(orderId string) (string, error) {
 	var err error
 
 	payment, err := r.PaymentRepository.FindByOrderId(orderId)
@@ -54,7 +54,7 @@ func (r *MakePaymentUseCase) UpdateToStatusApproved(payment entities.Payment) (s
 	}
 }
 
-func (r *MakePaymentUseCase) ExecuteErrorPaymentWithOrderId(orderId uint) (string, error) {
+func (r *MakePaymentUseCase) ExecuteErrorPaymentWithOrderId(orderId string) (string, error) {
 	//TODO: this service can be improved and update payment status to error in DB. For now, we only notify a topic
 	err := r.PubSubInterface.NotifyPaymentError(orderId)
 	if err != nil {

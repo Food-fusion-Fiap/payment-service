@@ -8,7 +8,7 @@ import (
 
 type Payment struct {
 	gorm.Model
-	OrderID       uint
+	OrderID       string
 	QrCode        string
 	PaymentStatus string
 }

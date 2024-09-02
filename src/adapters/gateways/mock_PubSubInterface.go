@@ -10,7 +10,7 @@ type MockPubSubInterface struct {
 }
 
 // NotifyPaymentApproved provides a mock function with given fields: orderId
-func (_m *MockPubSubInterface) NotifyPaymentApproved(orderId uint) error {
+func (_m *MockPubSubInterface) NotifyPaymentApproved(orderId string) error {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
@@ -18,7 +18,7 @@ func (_m *MockPubSubInterface) NotifyPaymentApproved(orderId uint) error {
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(uint) error); ok {
+	if rf, ok := ret.Get(0).(func(string) error); ok {
 		r0 = rf(orderId)
 	} else {
 		r0 = ret.Error(0)
@@ -28,7 +28,7 @@ func (_m *MockPubSubInterface) NotifyPaymentApproved(orderId uint) error {
 }
 
 // NotifyPaymentError provides a mock function with given fields: orderId
-func (_m *MockPubSubInterface) NotifyPaymentError(orderId uint) error {
+func (_m *MockPubSubInterface) NotifyPaymentError(orderId string) error {
 	ret := _m.Called(orderId)
 
 	if len(ret) == 0 {
@@ -36,7 +36,7 @@ func (_m *MockPubSubInterface) NotifyPaymentError(orderId uint) error {
 	}
 
 	var r0 error
-	if rf, ok := ret.Get(0).(func(uint) error); ok {
+	if rf, ok := ret.Get(0).(func(string) error); ok {
 		r0 = rf(orderId)
 	} else {
 		r0 = ret.Error(0)
