@@ -12,7 +12,7 @@ import (
 	usecases "github.com/CAVAh/api-tech-challenge/src/core/domain/usecases/make_payment"
 	"github.com/CAVAh/api-tech-challenge/src/infra/db/repositories"
 	"github.com/CAVAh/api-tech-challenge/src/infra/external/mercado_pago"
-	"github.com/CAVAh/api-tech-challenge/src/infra/external/order_service_mock"
+	"github.com/CAVAh/api-tech-challenge/src/infra/external/order_service"
 )
 
 func HandleRequests() {
@@ -25,12 +25,12 @@ func HandleRequests() {
 	createQrCodeUseCase := create_qr_code.CreateQrCodeUseCase{
 		PaymentInterface:  &mercado_pago.MercadoPagoIntegration{},
 		PaymentRepository: &repositories.PaymentRepository{},
-		OrderInterface:    &order_service_mock.OrderInterface{},
+		OrderInterface:    &order_service.OrderInterface{},
 	}
 
 	makePaymentUseCase := usecases.MakePaymentUseCase{
 		PaymentRepository: &repositories.PaymentRepository{},
-		OrderInterface:    &order_service_mock.OrderInterface{},
+		OrderInterface:    &order_service.OrderInterface{},
 	}
 
 	checkPaymentStatusUsecase := check_payment_status.CheckPaymentStatusUsecase{
