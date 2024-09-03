@@ -1,3 +1,7 @@
+# Integration between order-service and payment-service
+To integrate both services, it is needed to get order-service LoadBalancer DNS from AWS and substitute string in [orderServiceAddress](https://github.com/Food-fusion-Fiap/payment-service/blob/dea633fb7ff887c82e7bbd1abbfa22beebb5fa02/src/infra/external/order_service/get_order.go#L17).
+
+
 # How to run locally
 - docker compose up to run postgres and pgadmin (file docker-compose.yml)
 - on src/infra/db/gorm/gorm.go, comment production db string and descoment local development connection string

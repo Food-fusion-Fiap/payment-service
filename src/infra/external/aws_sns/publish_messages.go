@@ -21,7 +21,7 @@ func (r PubSubInterface) NotifyPaymentApproved(orderId string) error {
 	}
 	snsClient := sns.NewFromConfig(sdkConfig)
 	topicArn := "arn:aws:sns:us-east-1:211125364272:golang-test"
-	message := fmt.Sprintf("Sucess order id=%s", orderId)
+	message := fmt.Sprintf("Success order id=%s", orderId)
 
 	err = Publish(*snsClient, topicArn, message)
 	if err != nil {

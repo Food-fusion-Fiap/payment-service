@@ -13,6 +13,7 @@ type OrderInterface struct {
 }
 
 func (r OrderInterface) GetOrder(orderId string) (entities.Order, error) {
+	//TODO: precisa chumbar aqui o DNS do LoadBalancer do order-service
 	orderServiceAddress := fmt.Sprintf("http://ada859e8692e840ea9a41533c9f5c8d6-315966617.us-east-1.elb.amazonaws.com/orders/%s", orderId)
 	resp, err := http.Get(orderServiceAddress)
 	if err != nil {
