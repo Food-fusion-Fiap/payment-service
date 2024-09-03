@@ -1,6 +1,7 @@
 package order_service
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"io"
@@ -19,18 +20,12 @@ func (r OrderInterface) GetOrder(orderId string) (entities.Order, error) {
 		log.Panic(err, "Erro ao conectar com order-service")
 	}
 
-	log.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-	log.Println(resp)
-	log.Println(resp.Body)
-	log.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+	bodyBytes, err := io.ReadAll(resp.Body)
+	var targetOrder entities.Order
+	err = json.Unmarshal(bodyBytes, &targetOrder)
+	if err != nil {
+		log.Println(err, "Erro deserializar o pedido")
+	}
 
-	defer func(Body io.ReadCloser) {
-		err := Body.Close()
-		if err != nil {
-			fmt.Println(err, "Erro ao ler body do order-service")
-			log.Panic(err, "Erro ao ler body do order-service")
-		}
-	}(resp.Body)
-
-	return entities.Order{ID: "aaa"}, nil
+	return targetOrder, nil
 }
