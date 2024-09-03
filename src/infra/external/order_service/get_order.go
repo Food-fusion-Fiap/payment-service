@@ -21,6 +21,7 @@ func (r OrderInterface) GetOrder(orderId string) (entities.Order, error) {
 
 	log.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 	log.Println(resp)
+	log.Println(resp.Body)
 	log.Println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
 
 	defer func(Body io.ReadCloser) {
