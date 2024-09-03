@@ -12,7 +12,7 @@ type OrderInterface struct {
 }
 
 func (r OrderInterface) GetOrder(orderId string) (entities.Order, error) {
-	orderServiceAddress := fmt.Sprintf("http://order-service.svc.cluster.local:30202/orders/:id?=%s", orderId)
+	orderServiceAddress := fmt.Sprintf("http://order-service.svc.cluster.local:30202/orders/%s", orderId)
 	resp, err := http.Get(orderServiceAddress)
 	if err != nil {
 		fmt.Println(err, "Erro ao conectar com order-service")
