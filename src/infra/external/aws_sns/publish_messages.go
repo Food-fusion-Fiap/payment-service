@@ -37,7 +37,10 @@ func (r PubSubInterface) NotifyPaymentError(orderId string) error {
 		fmt.Println(err)
 		return err
 	}
+	log.Println(sdkConfig)
+	log.Println(sdkConfig.Credentials)
 	snsClient := sns.NewFromConfig(sdkConfig)
+	log.Println(snsClient)
 	topicArn := "arn:aws:sns:us-east-1:211125364272:golang-test"
 	message := fmt.Sprintf("{\"orderId\": \"%s\",  \"changeToStatus\": \"cancelled\"}", orderId)
 
