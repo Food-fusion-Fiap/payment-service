@@ -6,6 +6,7 @@ import (
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/enums"
 	"github.com/CAVAh/api-tech-challenge/src/infra/db/gorm"
 	"github.com/CAVAh/api-tech-challenge/src/infra/db/models"
+	"log"
 	"strings"
 )
 
@@ -20,6 +21,7 @@ func (r PaymentRepository) Create(e entities.Payment) (string, error) {
 	}
 
 	if err := gorm.DB.Create(&payment).Error; err != nil {
+		log.Print(err)
 		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
 			return "", errors.New("pagamento já existe no sistema")
 		} else {
