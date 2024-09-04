@@ -20,20 +20,14 @@ func (r PubSubInterface) NotifyPaymentApproved(orderId string) error {
 		fmt.Println(err)
 		return err
 	}
-	log.Print("veio aqui 01")
 	snsClient := sns.NewFromConfig(sdkConfig)
-	log.Print("veio aqui 02")
 	topicArn := os.Getenv("PAYMENT_SUCCESS_SNS_TOPIC_ARN")
-	log.Print("veio aqui 03")
 	message := fmt.Sprintf("{\"orderId\": \"%s\",  \"changeToStatus\": \"received\"}", orderId)
-	log.Print("veio aqui 04")
 
 	err = Publish(*snsClient, topicArn, message)
-	log.Print("veio aqui 05")
 	if err != nil {
 		return err
 	}
-	log.Print("veio aqui 06")
 	return nil
 }
 

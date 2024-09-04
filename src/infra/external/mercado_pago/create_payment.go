@@ -6,6 +6,7 @@ import (
 	"errors"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
 	"io"
+	"log"
 	"net/http"
 )
 
@@ -17,6 +18,7 @@ func (m MercadoPagoIntegration) CreatePayment(order entities.Order) (string, err
 
 	orderJson, err := json.Marshal(MountMercadoPagoRequest(order))
 	if err != nil {
+		log.Print(err)
 		return qrCode, errors.New("erro ao deserializar o objeto")
 	}
 
@@ -24,6 +26,7 @@ func (m MercadoPagoIntegration) CreatePayment(order entities.Order) (string, err
 
 	r, err := http.NewRequest("POST", GetMercadoPagoPostUrl(), bytes.NewBuffer(orderJson))
 	if err != nil {
+		log.Println(err)
 		return qrCode, errors.New("erro ao montar o request ao mercado pago")
 	}
 
@@ -33,6 +36,7 @@ func (m MercadoPagoIntegration) CreatePayment(order entities.Order) (string, err
 	client := &http.Client{}
 	res, err := client.Do(r)
 	if err != nil {
+		log.Println(err)
 		return qrCode, errors.New("erro ao fazer o post ao mercado pago")
 	}
 
@@ -46,10 +50,12 @@ func (m MercadoPagoIntegration) CreatePayment(order entities.Order) (string, err
 	var apiResponse = &QrCreatedResponse{}
 	derr := json.NewDecoder(res.Body).Decode(apiResponse)
 	if derr != nil {
+		log.Println(err)
 		return qrCode, errors.New("erro ao deserializar a resposta do mercado pago")
 	}
 
 	if res.StatusCode != http.StatusCreated {
+		log.Printf("erro do mercado pago: %d", res.StatusCode)
 		return qrCode, errors.New("mercado pago retornou um erro")
 	}
 

@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"github.com/CAVAh/api-tech-challenge/src/infra/external/aws_sns"
 	"log"
 
 	"github.com/gin-gonic/gin"
@@ -31,32 +32,33 @@ func HandleRequests() {
 	makePaymentUseCase := usecases.MakePaymentUseCase{
 		PaymentRepository: &repositories.PaymentRepository{},
 		OrderInterface:    &order_service.OrderInterface{},
+		PubSubInterface:   &aws_sns.PubSubInterface{},
 	}
 
 	checkPaymentStatusUsecase := check_payment_status.CheckPaymentStatusUsecase{
 		PaymentRepository: &repositories.PaymentRepository{},
 	}
 
-	orderRoutes := router.Group("/payments")
+	paymentRoutes := router.Group("/payments")
 	{
-		orderRoutes.GET("/qr-code", func(c *gin.Context) {
+		paymentRoutes.GET("/qr-code", func(c *gin.Context) {
 			controller.RequestQrCode(c, &createQrCodeUseCase)
 		})
-		orderRoutes.GET("/status", func(c *gin.Context) {
+		paymentRoutes.GET("/status", func(c *gin.Context) {
 			controller.CheckOrderPaymentStatus(c, &checkPaymentStatusUsecase)
 		})
-		orderRoutes.POST("", func(c *gin.Context) {
+		paymentRoutes.POST("", func(c *gin.Context) {
 			controller.MercadoPagoPayment(c, &makePaymentUseCase)
 		})
-		orderRoutes.GET("/quantity", func(c *gin.Context) {
+		paymentRoutes.GET("/quantity", func(c *gin.Context) {
 			controller.GetPaymentsQuantity(c, &getAllPaymentsUseCase)
 		})
 
 		//Routes that mock MercadoPago webhook payment:
-		orderRoutes.POST("/alternative-pay/:id", func(c *gin.Context) {
+		paymentRoutes.POST("/alternative-pay/:id", func(c *gin.Context) {
 			controller.Pay(c, &makePaymentUseCase)
 		})
-		orderRoutes.POST("/alternative-pay-with-qr-code/:qr", func(c *gin.Context) {
+		paymentRoutes.POST("/alternative-pay-with-qr-code/:qr", func(c *gin.Context) {
 			controller.PayQrCode(c, &makePaymentUseCase)
 		})
 	}

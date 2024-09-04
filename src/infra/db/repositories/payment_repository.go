@@ -21,7 +21,7 @@ func (r PaymentRepository) Create(e entities.Payment) (string, error) {
 	}
 
 	if err := gorm.DB.Create(&payment).Error; err != nil {
-		log.Print(err)
+		log.Println(err)
 		if strings.Contains(err.Error(), "duplicate key value violates unique constraint") {
 			return "", errors.New("pagamento já existe no sistema")
 		} else {
@@ -48,6 +48,7 @@ func (r PaymentRepository) FindByQrCode(qrCode string) (entities.Payment, error)
 	var payment models.Payment
 	gorm.DB.Where("qr_code = ?", qrCode).Find(&payment)
 	if payment.ID != 0 {
+		log.Println(payment)
 		return entities.Payment{}, errors.New("pagamento associado ao qrCode não encontado")
 	}
 

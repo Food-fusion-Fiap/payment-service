@@ -20,6 +20,7 @@ func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithQrCode(qrCode string) (st
 
 	payment, err := r.PaymentRepository.FindByQrCode(qrCode)
 	if err != nil {
+		log.Println(err)
 		return "", err
 	}
 
@@ -33,6 +34,7 @@ func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithOrderId(orderId string) (
 
 	payment, err := r.PaymentRepository.FindByOrderId(orderId)
 	if err != nil {
+		log.Println(err)
 		return "", errors.New("pagamento não encontrado")
 	}
 
@@ -48,6 +50,7 @@ func (r *MakePaymentUseCase) UpdateToStatusApproved(payment entities.Payment) (s
 		r.PaymentRepository.UpdateToPaid(payment.ID)
 		err := r.PubSubInterface.NotifyPaymentApproved(payment.OrderID)
 		if err != nil {
+			log.Println(err)
 			return "", err
 		}
 		return "Pago", nil
