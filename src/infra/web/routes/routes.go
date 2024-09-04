@@ -55,11 +55,11 @@ func HandleRequests() {
 		})
 
 		//Routes that mock MercadoPago webhook payment:
-		paymentRoutes.POST("/alternative-pay/:id", func(c *gin.Context) {
-			controller.Pay(c, &makePaymentUseCase)
+		paymentRoutes.POST("/alternative-pay-success/:id", func(c *gin.Context) {
+			controller.PayAlternativeSuccess(c, &makePaymentUseCase)
 		})
-		paymentRoutes.POST("/alternative-pay-with-qr-code/:qr", func(c *gin.Context) {
-			controller.PayQrCode(c, &makePaymentUseCase)
+		paymentRoutes.POST("/alternative-pay-failure/:id", func(c *gin.Context) {
+			controller.PayAlternativeFailure(c, &makePaymentUseCase)
 		})
 	}
 

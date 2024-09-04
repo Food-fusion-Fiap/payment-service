@@ -34,7 +34,7 @@ func RequestQrCode(c *gin.Context, useCase create_qr_code.CreateQrCodeInterface)
 	c.JSON(http.StatusOK, response)
 }
 
-func Pay(c *gin.Context, useCase make_payment.MakePaymentInterface) {
+func PayAlternativeSuccess(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	id := c.Params.ByName("id")
 
 	response, err := useCase.ExecuteApprovedPaymentWithOrderId(id)
@@ -49,10 +49,10 @@ func Pay(c *gin.Context, useCase make_payment.MakePaymentInterface) {
 	c.JSON(http.StatusOK, response)
 }
 
-func PayQrCode(c *gin.Context, useCase make_payment.MakePaymentInterface) {
-	qrCode := c.Params.ByName("qr")
+func PayAlternativeFailure(c *gin.Context, useCase make_payment.MakePaymentInterface) {
+	id := c.Params.ByName("id")
 
-	response, err := useCase.ExecuteApprovedPaymentWithQrCode(qrCode)
+	response, err := useCase.ExecuteErrorPaymentWithOrderId(id)
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{

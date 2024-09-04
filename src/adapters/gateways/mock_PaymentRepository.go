@@ -68,34 +68,6 @@ func (_m *MockPaymentRepository) FindByOrderId(orderId string) (entities.Payment
 	return r0, r1
 }
 
-// FindByQrCode provides a mock function with given fields: qrCode
-func (_m *MockPaymentRepository) FindByQrCode(qrCode string) (entities.Payment, error) {
-	ret := _m.Called(qrCode)
-
-	if len(ret) == 0 {
-		panic("no return value specified for FindByQrCode")
-	}
-
-	var r0 entities.Payment
-	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (entities.Payment, error)); ok {
-		return rf(qrCode)
-	}
-	if rf, ok := ret.Get(0).(func(string) entities.Payment); ok {
-		r0 = rf(qrCode)
-	} else {
-		r0 = ret.Get(0).(entities.Payment)
-	}
-
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(qrCode)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
 // FindPaymentsQuantity provides a mock function with given fields:
 func (_m *MockPaymentRepository) FindPaymentsQuantity() (uint, error) {
 	ret := _m.Called()

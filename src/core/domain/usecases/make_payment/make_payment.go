@@ -15,20 +15,6 @@ type MakePaymentUseCase struct {
 	PubSubInterface   gateways.PubSubInterface
 }
 
-func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithQrCode(qrCode string) (string, error) {
-	var err error
-
-	payment, err := r.PaymentRepository.FindByQrCode(qrCode)
-	if err != nil {
-		log.Println(err)
-		return "", err
-	}
-
-	out, err := r.UpdateToStatusApproved(payment)
-
-	return out, err
-}
-
 func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithOrderId(orderId string) (string, error) {
 	var err error
 
