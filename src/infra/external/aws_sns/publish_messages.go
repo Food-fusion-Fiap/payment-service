@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-sdk-go-v2/config"
 	"github.com/aws/aws-sdk-go-v2/service/sns"
 	"log"
+	"os"
 )
 
 type PubSubInterface struct {
@@ -20,7 +21,7 @@ func (r PubSubInterface) NotifyPaymentApproved(orderId string) error {
 		return err
 	}
 	snsClient := sns.NewFromConfig(sdkConfig)
-	topicArn := "arn:aws:sns:us-east-1:211125364272:golang-test"
+	topicArn := os.Getenv("PAYMENT_SUCCESS_SNS_TOPIC_ARN")
 	message := fmt.Sprintf("{\"orderId\": \"%s\",  \"changeToStatus\": \"received\"}", orderId)
 
 	err = Publish(*snsClient, topicArn, message)
@@ -39,7 +40,7 @@ func (r PubSubInterface) NotifyPaymentError(orderId string) error {
 		return err
 	}
 	snsClient := sns.NewFromConfig(sdkConfig)
-	topicArn := "arn:aws:sns:us-east-1:211125364272:golang-test"
+	topicArn := os.Getenv("PAYMENT_FAILURE_SNS_TOPIC_ARN")
 	message := fmt.Sprintf("{\"orderId\": \"%s\",  \"changeToStatus\": \"cancelled\"}", orderId)
 
 	err = Publish(*snsClient, topicArn, message)

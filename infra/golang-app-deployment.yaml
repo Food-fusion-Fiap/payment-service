@@ -63,3 +63,13 @@ spec:
                 secretKeyRef:
                   name: secret-payment-service-backend
                   key: POSTGRES_PASSWORD
+            - name: PAYMENT_SUCCESS_SNS_TOPIC_ARN
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-payment-service-backend
+                  key: PAYMENT_SUCCESS_SNS_TOPIC_ARN
+            - name: PAYMENT_FAILURE_SNS_TOPIC_ARN
+              valueFrom:
+                configMapKeyRef:
+                  name: configmap-payment-service-backend
+                  key: PAYMENT_FAILURE_SNS_TOPIC_ARN

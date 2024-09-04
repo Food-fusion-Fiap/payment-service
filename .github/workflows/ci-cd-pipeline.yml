@@ -121,12 +121,18 @@ jobs:
           DB_HOST=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_host" --with-decryption --output json | jq '.Parameter | .Value')
           DB_USERNAME=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_username" --with-decryption --output json | jq '.Parameter | .Value')
           DB_PASSWORD=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_password" --with-decryption --output json | jq '.Parameter | .Value')
-        
+          
+          PAYMENT_SUCCESS_SNS_TOPIC_ARN=$(aws ssm get-parameter --name "/payment_success_topic_arn" --with-decryption --output json | jq '.Parameter | .Value')
+          PAYMENT_FAILURE_SNS_TOPIC_ARN=$(aws ssm get-parameter --name "/payment_failure_topic_arn" --with-decryption --output json | jq '.Parameter | .Value')
+          
           sed -i 's|placeholder_repository_name|'"$IMAGE_URI"'|' ./infra/golang-app-deployment.yaml
           sed -i 's|aws_ssm_db_name|'"$DB_NAME"'|' ./infra/configmap.yaml
           sed -i 's|aws_ssm_db_host|'"$DB_HOST"'|' ./infra/configmap.yaml
           sed -i 's|aws_ssm_db_username|'"$DB_USERNAME"'|' ./infra/secrets.yaml
           sed -i 's|aws_ssm_db_password|'"$DB_PASSWORD"'|' ./infra/secrets.yaml
+          
+          sed -i 's|aws_ssm_payment_success_sns_topic_arn|'"$PAYMENT_SUCCESS_SNS_TOPIC_ARN"'|' ./infra/configmap.yaml
+          sed -i 's|aws_ssm_payment_failure_sns_topic_arn|'"$PAYMENT_FAILURE_SNS_TOPIC_ARN"'|' ./infra/configmap.yaml
 
       - name: Install kubectl
         run: |

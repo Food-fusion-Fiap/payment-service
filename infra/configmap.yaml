@@ -5,3 +5,5 @@ metadata:
 data:
   POSTGRES_DB: aws_ssm_db_name
   POSTGRES_HOST: aws_ssm_db_host
+  PAYMENT_SUCCESS_SNS_TOPIC_ARN: aws_ssm_payment_success_sns_topic_arn
+  PAYMENT_FAILURE_SNS_TOPIC_ARN: aws_ssm_payment_failure_sns_topic_arn
