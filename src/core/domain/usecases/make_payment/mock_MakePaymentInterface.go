@@ -40,34 +40,6 @@ func (_m *MockMakePaymentInterface) ExecuteApprovedPaymentWithOrderId(orderId st
 	return r0, r1
 }
 
-// ExecuteApprovedPaymentWithQrCode provides a mock function with given fields: qrCode
-func (_m *MockMakePaymentInterface) ExecuteApprovedPaymentWithQrCode(qrCode string) (string, error) {
-	ret := _m.Called(qrCode)
-
-	if len(ret) == 0 {
-		panic("no return value specified for ExecuteApprovedPaymentWithQrCode")
-	}
-
-	var r0 string
-	var r1 error
-	if rf, ok := ret.Get(0).(func(string) (string, error)); ok {
-		return rf(qrCode)
-	}
-	if rf, ok := ret.Get(0).(func(string) string); ok {
-		r0 = rf(qrCode)
-	} else {
-		r0 = ret.Get(0).(string)
-	}
-
-	if rf, ok := ret.Get(1).(func(string) error); ok {
-		r1 = rf(qrCode)
-	} else {
-		r1 = ret.Error(1)
-	}
-
-	return r0, r1
-}
-
 // ExecuteErrorPaymentWithOrderId provides a mock function with given fields: orderId
 func (_m *MockMakePaymentInterface) ExecuteErrorPaymentWithOrderId(orderId string) (string, error) {
 	ret := _m.Called(orderId)

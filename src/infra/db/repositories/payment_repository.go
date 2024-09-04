@@ -44,18 +44,6 @@ func (r PaymentRepository) FindByOrderId(orderId string) (entities.Payment, erro
 	return result, nil
 }
 
-func (r PaymentRepository) FindByQrCode(qrCode string) (entities.Payment, error) {
-	var payment models.Payment
-	gorm.DB.Where("qr_code = ?", qrCode).Find(&payment)
-	if payment.ID != 0 {
-		log.Println(payment)
-		return entities.Payment{}, errors.New("pagamento associado ao qrCode não encontado")
-	}
-
-	result := payment.ToDomain()
-	return result, nil
-}
-
 func (r PaymentRepository) UpdateToPaid(paymentID uint) {
 	var payment models.Payment
 	gorm.DB.First(&payment, paymentID)
