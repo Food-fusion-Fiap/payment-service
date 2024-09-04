@@ -64,11 +64,11 @@ func TestPay_Success(t *testing.T) {
 	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("success", nil)
 
 	r := gin.Default()
-	r.POST("/payments/alternative-pay", func(c *gin.Context) {
-		Pay(c, useCaseMock)
+	r.POST("/payments/alternative-pay-success", func(c *gin.Context) {
+		PayAlternativeSuccess(c, useCaseMock)
 	})
 
-	req, _ := http.NewRequest(http.MethodPost, "/payments/alternative-pay", nil)
+	req, _ := http.NewRequest(http.MethodPost, "/payments/alternative-pay-success", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
@@ -84,51 +84,11 @@ func TestPay_Fails(t *testing.T) {
 	useCaseMock.On("ExecuteApprovedPaymentWithOrderId", mock.Anything).Return("", errors.New("some error"))
 
 	r := gin.Default()
-	r.POST("/payments/alternative-pay", func(c *gin.Context) {
-		Pay(c, useCaseMock)
+	r.POST("/payments/alternative-pay-success", func(c *gin.Context) {
+		PayAlternativeSuccess(c, useCaseMock)
 	})
 
-	req, _ := http.NewRequest(http.MethodPost, "/payments/alternative-pay", nil)
-	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
-
-	r.ServeHTTP(w, req)
-
-	assert.Equal(t, http.StatusBadRequest, w.Code)
-}
-
-func TestPayQrCode_Success(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-
-	useCaseMock := &make_payment.MockMakePaymentInterface{}
-	useCaseMock.On("ExecuteApprovedPaymentWithQrCode", mock.Anything).Return("success", nil)
-
-	r := gin.Default()
-	r.POST("/payments/alternative-pay-with-qr-code", func(c *gin.Context) {
-		PayQrCode(c, useCaseMock)
-	})
-
-	req, _ := http.NewRequest(http.MethodPost, "/payments/alternative-pay-with-qr-code", nil)
-	req.Header.Set("Content-Type", "application/json")
-	w := httptest.NewRecorder()
-
-	r.ServeHTTP(w, req)
-
-	assert.Equal(t, http.StatusOK, w.Code)
-}
-
-func TestPayQrCode_Fails(t *testing.T) {
-	gin.SetMode(gin.TestMode)
-
-	useCaseMock := &make_payment.MockMakePaymentInterface{}
-	useCaseMock.On("ExecuteApprovedPaymentWithQrCode", mock.Anything).Return("", errors.New("some error"))
-
-	r := gin.Default()
-	r.POST("/payments/alternative-pay-with-qr-code", func(c *gin.Context) {
-		PayQrCode(c, useCaseMock)
-	})
-
-	req, _ := http.NewRequest(http.MethodPost, "/payments/alternative-pay-with-qr-code", nil)
+	req, _ := http.NewRequest(http.MethodPost, "/payments/alternative-pay-success", nil)
 	req.Header.Set("Content-Type", "application/json")
 	w := httptest.NewRecorder()
 
