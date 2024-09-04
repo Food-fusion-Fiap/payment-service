@@ -2,6 +2,7 @@ package make_payment
 
 import (
 	"errors"
+	"log"
 
 	"github.com/CAVAh/api-tech-challenge/src/adapters/gateways"
 	"github.com/CAVAh/api-tech-challenge/src/core/domain/entities"
@@ -43,6 +44,7 @@ func (r *MakePaymentUseCase) ExecuteApprovedPaymentWithOrderId(orderId string) (
 func (r *MakePaymentUseCase) UpdateToStatusApproved(payment entities.Payment) (string, error) {
 	if payment.PaymentStatus == enums.AwaitingPayment {
 		payment.PaymentStatus = enums.Paid
+		log.Print(payment)
 		r.PaymentRepository.UpdateToPaid(payment.ID)
 		err := r.PubSubInterface.NotifyPaymentApproved(payment.OrderID)
 		if err != nil {
