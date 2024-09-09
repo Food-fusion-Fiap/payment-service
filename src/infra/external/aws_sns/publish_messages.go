@@ -20,17 +20,7 @@ func (r PubSubInterface) NotifyPaymentApproved(orderId string) error {
 		fmt.Println(err)
 		return err
 	}
-	log.Println("================================CREDENTIALS INICIO===============================================")
-	log.Println(sdkConfig)
-	log.Println(sdkConfig.Credentials)
-	log.Println(sdkConfig.ConfigSources)
-	log.Print(sdkConfig.Region)
-
-	log.Print(os.Getenv("AWS_ACCESS_KEY_ID"))
-	log.Print(os.Getenv("AWS_SECRET_ACCESS_KEY"))
-	log.Println("=================================CREDENTIALs FIM==============================================")
 	snsClient := sns.NewFromConfig(sdkConfig)
-	//topicArn := "arn:aws:sns:us-east-1:211125364272:golang-test"
 	topicArn := os.Getenv("PAYMENT_SUCCESS_SNS_TOPIC_ARN")
 	message := fmt.Sprintf("{\"orderId\": \"%s\",  \"changeToStatus\": \"received\"}", orderId)
 
