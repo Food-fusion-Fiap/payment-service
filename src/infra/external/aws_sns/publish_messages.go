@@ -14,7 +14,7 @@ type PubSubInterface struct {
 }
 
 func (r PubSubInterface) NotifyPaymentApproved(orderId string) error {
-	sdkConfig, err := config.LoadDefaultConfig(context.TODO())
+	sdkConfig, err := config.LoadDefaultConfig(context.TODO(), config.WithRegion("us-east-1"))
 	if err != nil {
 		fmt.Println("Couldn't load default configuration. Have you set up your AWS account?")
 		fmt.Println(err)
@@ -25,6 +25,9 @@ func (r PubSubInterface) NotifyPaymentApproved(orderId string) error {
 	log.Println(sdkConfig.Credentials)
 	log.Println(sdkConfig.ConfigSources)
 	log.Print(sdkConfig.Region)
+
+	log.Print(os.Getenv("AWS_ACCESS_KEY_ID"))
+	log.Print(os.Getenv("AWS_SECRET_ACCESS_KEY"))
 	log.Println("=================================CREDENTIALs FIM==============================================")
 	snsClient := sns.NewFromConfig(sdkConfig)
 	//topicArn := "arn:aws:sns:us-east-1:211125364272:golang-test"
