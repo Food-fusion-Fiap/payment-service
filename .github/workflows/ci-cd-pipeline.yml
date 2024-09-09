@@ -116,6 +116,8 @@ jobs:
       - name: Update Kubernetes configuration
         env:
           SERVICE_NAME: ${{ vars.SERVICE_NAME }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           DB_NAME=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_name" --with-decryption --output json | jq '.Parameter | .Value')
           DB_HOST=$(aws ssm get-parameter --name "/$SERVICE_NAME/db_host" --with-decryption --output json | jq '.Parameter | .Value')
@@ -133,6 +135,9 @@ jobs:
           
           sed -i 's|aws_ssm_payment_success_sns_topic_arn|'"$PAYMENT_SUCCESS_SNS_TOPIC_ARN"'|' ./infra/configmap.yaml
           sed -i 's|aws_ssm_payment_failure_sns_topic_arn|'"$PAYMENT_FAILURE_SNS_TOPIC_ARN"'|' ./infra/configmap.yaml
+
+          sed -i 's|aws_access_key_id|'"$AWS_ACCESS_KEY_ID"'|' ./infra/secrets.yaml
+          sed -i 's|aws_secret_access_key|'"$AWS_SECRET_ACCESS_KEY"'|' ./infra/secrets.yaml
 
       - name: Install kubectl
         run: |
