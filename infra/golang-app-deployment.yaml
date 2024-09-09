@@ -73,3 +73,15 @@ spec:
                 configMapKeyRef:
                   name: configmap-payment-service-backend
                   key: PAYMENT_FAILURE_SNS_TOPIC_ARN
+
+
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: secret-payment-service-backend
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: secret-payment-service-backend
+                  key: AWS_SECRET_ACCESS_KEY
