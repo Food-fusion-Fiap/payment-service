@@ -51,7 +51,7 @@ jobs:
             -Dsonar.tests=.
             -Dsonar.test.inclusions=**/*_test.go
             -Dsonar.sources=src/
-            -Dsonar.exclusions=src/adapters/gateways/**,src/infra/web/routes/**,**/*_mock.go,src/infra/db/repositories/**,src/infra/external/order_service_mock/mock_order_interface.go,**/mock_*.go
+            -Dsonar.exclusions=src/adapters/gateways/**,src/infra/web/routes/**,**/*_mock.go,src/infra/db/repositories/**,src/infra/external/order_service_mock/mock_order_interface.go,**/mock_*.go,src/core/domain/entities/*,src/infra/db/models/*,src/infra/external/mercado_pago/constants.go,src/infra/external/mercado_pago/dto.go
             -Dsonar.go.coverage.reportPaths=cov.out
 
             #-Dsonar.externalIssuesReportPaths=report.json
